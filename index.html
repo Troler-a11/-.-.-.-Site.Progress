@@ -612,6 +612,74 @@
 
         // --- END OF SCRIPT ---
     </script>
+<script>
+    // Цей блок має бути в самому кінці, після всіх частин
+    function initMegaGenerator() {
+        const input = document.getElementById('user-input-max');
+        const max = parseInt(input.value);
+        const resContainer = document.getElementById('plan-container');
+        
+        // Перевірка на пусте поле або некоректне число
+        if (isNaN(max) || max < 0) {
+            input.style.border = '2px solid var(--neon)';
+            input.placeholder = "Введіть число!";
+            return;
+        }
+        
+        input.style.border = '1px solid #1a1a1a';
+        resContainer.innerHTML = '';
+        const t = translations[currentLanguage];
+
+        for (let day = 1; day <= 30; day++) {
+            const dayBox = document.createElement('div');
+            dayBox.className = 'day-card';
+            
+            if (day % 4 === 0 || day === 15 || day === 29) {
+                dayBox.classList.add('rest-day');
+                dayBox.innerHTML = `
+                    <div class="day-head">
+                        <div class="day-info">
+                            <h4>DAY ${day}</h4>
+                            <div class="day-tag">${t.rest}</div>
+                        </div>
+                    </div>
+                    <p style="color: #555; font-size: 0.9rem;">Відпочинок — це теж частина тренування.</p>
+                `;
+            } else {
+                dayBox.classList.add('work-day');
+                const intensity = getIntensityType(day);
+                dayBox.innerHTML = `
+                    <div class="day-head">
+                        <div class="day-info">
+                            <h4>DAY ${day}</h4>
+                            <div class="day-tag">${intensity.name}</div>
+                        </div>
+                    </div>
+                `;
+                
+                const workout = buildWorkoutLogic(max, day, intensity.type);
+                workout.forEach((step, idx) => {
+                    const stepDiv = document.createElement('div');
+                    stepDiv.className = 'exercise-block';
+                    stepDiv.innerHTML = `
+                        <span class="ex-label">${t.set} ${idx + 1}</span>
+                        <div class="ex-val">${step.title}</div>
+                        <div class="ex-note">${step.desc}</div>
+                    `;
+                    dayBox.appendChild(stepDiv);
+                    if (idx < workout.length - 1) {
+                        const p = document.createElement('div');
+                        p.className = 'rest-timer';
+                        p.innerText = `⏳ ${t.rest}: ${step.rest}s`;
+                        dayBox.appendChild(p);
+                    }
+                });
+            }
+            resContainer.appendChild(dayBox);
+        }
+        resContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>                    
 </body>
 </html>
 
