@@ -5,123 +5,362 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ЧЕРЕЗ СИЛУ | PATH</title>
     <style>
-        :root { --neon: #ff6b00; --bg: #0a0a0a; --card: rgba(255, 255, 255, 0.05); }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        :root {
+            --neon: #ff6b00;
+            --neon-rgba: rgba(255, 107, 0, 0.2);
+            --bg: #050505;
+            --card-bg: rgba(20, 20, 20, 0.8);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            padding: 60px 20px 30px;
+            text-align: center;
+            background: linear-gradient(to bottom, #111, var(--bg));
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, var(--neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--neon-rgba);
+        }
+
+        .subtitle {
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Grid System */
+        .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
         
-        /* Головна сторінка */
-        header { text-align: center; padding: 40px 0; }
-        header h1 { font-size: 2.5rem; letter-spacing: 3px; text-transform: uppercase; color: var(--neon); }
-        
-        .grid-25 { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-        .skill-card { 
-            background: var(--card); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
-            padding: 20px; text-align: center; cursor: pointer; transition: 0.3s;
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 25px 15px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(10px);
-        }
-        .skill-card:hover { border-color: var(--neon); transform: translateY(-5px); }
-
-        /* Вікно вправи (Overlay) */
-        .overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--bg); display: none; flex-direction: column; z-index: 100;
-            overflow-y: auto; padding: 20px; box-sizing: border-box;
-        }
-        .nav-back { font-size: 1.5rem; cursor: pointer; color: var(--neon); display: flex; align-items: center; gap: 10px; }
-        .content { max-width: 600px; margin: 40px auto; width: 100%; }
-        
-        input { 
-            width: 100%; background: var(--card); border: 1px solid #333; 
-            padding: 15px; border-radius: 10px; color: white; margin: 10px 0; font-size: 1.1rem;
-        }
-        .btn-gen { 
-            width: 100%; background: var(--neon); border: none; padding: 18px; 
-            border-radius: 10px; color: black; font-weight: bold; font-size: 1.2rem; cursor: pointer; margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 120px;
         }
 
-        /* План тренувань */
-        .plan-box { margin-top: 40px; border-left: 2px solid var(--neon); padding-left: 20px; }
-        .day { margin-bottom: 20px; background: var(--card); padding: 15px; border-radius: 10px; }
-        .day h4 { color: var(--neon); margin: 0 0 10px 0; }
+        .skill-btn:active { transform: scale(0.95); }
+        .skill-btn:hover {
+            border-color: var(--neon);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--neon-rgba);
+        }
+
+        .skill-btn h3 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #ddd;
+        }
+
+        /* Overlay Page */
+        .page-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            padding-bottom: 50px;
+        }
+
+        .nav-header {
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--neon);
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Form Elements */
+        .form-container {
+            padding: 30px 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .input-group { margin-bottom: 25px; }
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #888;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            background: #111;
+            border: 1px solid #222;
+            padding: 18px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--neon); background: #161616; }
+
+        .btn-generate {
+            width: 100%;
+            background: var(--neon);
+            color: #000;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.3);
+            margin-top: 10px;
+        }
+
+        /* Training Result Area */
+        .result-container {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .day-card {
+            background: #111;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #222;
+        }
+
+        .day-card.rest { border-left: 4px solid #444; opacity: 0.7; }
+        .day-card.work { border-left: 4px solid var(--neon); }
+
+        .day-card h4 {
+            margin: 0 0 10px;
+            color: var(--neon);
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .exercise-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            border-left: 2px solid #333;
+        }
+
+        .rest-text { font-style: italic; color: #666; }
     </style>
 </head>
 <body>
 
-    <header id="mainPage">
-        <h1>س.через.силу.ك</h1>
-        <div class="grid-25" id="skillsGrid"></div>
-    </header>
+<header id="mainHeader">
+    <h1 class="logo">ЧЕРЕЗ СИЛУ</h1>
+    <p class="subtitle">🪬 Шлях до межі можливостей</p>
+</header>
 
-    <div id="exercisePage" class="overlay">
-        <div class="nav-back" onclick="goBack()">← <span id="categoryTitle">Вправа</span></div>
-        <div class="content">
-            <div id="inputsArea"></div>
-            <div id="targetArea"></div>
-            <button class="btn-gen" onclick="generateWorkout()">СТВОРИТИ ТРЕНУВАННЯ</button>
-            <div id="finalPlan" class="plan-box"></div>
-        </div>
+<div class="container" id="mainContent">
+    <div class="skills-grid" id="grid"></div>
+</div>
+
+<div class="page-overlay" id="pageOverlay">
+    <div class="nav-header">
+        <button class="back-btn" onclick="closePage()">✕</button>
+        <span class="page-title" id="titleText">Вправа</span>
     </div>
 
+    <div class="form-container">
+        <div id="dynamicInputs"></div>
+        <div id="goalSection"></div>
+        <button class="btn-generate" onclick="startGeneration()">СТВОРИТИ ТРЕНУВАННЯ</button>
+
+        <div class="result-container" id="resultArea">
+            <h3 style="text-align: center; margin-bottom: 25px;">ПЛАН НА 30 ДНІВ</h3>
+            <div id="daysList"></div>
+        </div>
+    </div>
+</div>
+
 <script>
+    // База даних 25 вправ
     const skills = [
-        {id: 1, name: "Збільшити підтягування", type: "count"},
-        {id: 2, name: "Збільшити віджимання", type: "count"},
-        {id: 3, name: "Вихід на дві", type: "skill", req: ["Підтягування", "Віджимання на брусах", "Вибухові підтягування"]},
-        {id: 4, name: "Передній віс", type: "skill", req: ["Підтягування", "Підняття ніг", "Утримання в закритому вісі"]},
-        {id: 5, name: "Стійка на руках", type: "skill", req: ["Віджимання від підлоги", "Планка", "L-sit"]},
-        // ... додай тут ще 20 штук за аналогією
+        { id: 1, name: "Збільшити Підтягування", type: "count", goal: true },
+        { id: 2, name: "Збільшити Відтискання", type: "count", goal: true },
+        { id: 3, name: "Збільшити Бруси", type: "count", goal: true },
+        { id: 4, name: "Відтискання від підлоги (Макс)", type: "count", goal: true },
+        { id: 5, name: "Прес: Підняття ніг", type: "count", goal: true },
+        { id: 6, name: "Вихід силою (Muscle Up)", type: "skill", req: ["Підтягування", "Відтискання на брусах", "Вибухові підтягування"] },
+        { id: 7, name: "Передній Віс (Front Lever)", type: "skill", req: ["Підтягування", "Підняття ніг до турніка", "L-sit"] },
+        { id: 8, name: "Планш (Horizon)", type: "skill", req: ["Відтискання", "Планка (сек)", "Відтискання в стійці"] },
+        { id: 9, name: "Стійка на руках", type: "skill", req: ["Планка (сек)", "Відтискання від підлоги", "Замок (місток)"] },
+        { id: 10, name: "Прапор (Human Flag)", type: "skill", req: ["Підтягування", "Бруси", "Прес (підняття ніг)"] },
+        { id: 11, name: "Ластівка (Back Lever)", type: "skill", req: ["Підтягування", "Бруси", "Поперек (гіперекстензія)"] },
+        { id: 12, name: "L-Sit (Кутик)", type: "count", goal: false },
+        { id: 13, name: "Вибухові підтягування", type: "count", goal: true },
+        { id: 14, name: "Підтягування на одній", type: "skill", req: ["Підтягування", "Утримання блоку", "Хват"] },
+        { id: 15, name: "Відтискання в стійці на руках", type: "count", goal: true },
+        { id: 16, name: "Горизонт на ліктях", type: "skill", req: ["Планка", "Відтискання", "Прес"] },
+        { id: 17, name: "Іспанський вихід", type: "skill", req: ["Вихід на 1", "Бруси", "Хват"] },
+        { id: 18, name: "Вис на одній руці", type: "count", goal: false },
+        { id: 19, name: "Друкарська машинка (Typewriter)", type: "count", goal: true },
+        { id: 20, name: "Глибокі відтискання", type: "count", goal: true },
+        { id: 21, name: "Вузькі підтягування", type: "count", goal: true },
+        { id: 22, name: "Діамантові відтискання", type: "count", goal: true },
+        { id: 23, name: "Планка (Макс. час)", type: "count", goal: false },
+        { id: 24, name: "Стрибкові випади", type: "count", goal: true },
+        { id: 25, name: "Залізна хватка (Вис)", type: "count", goal: true }
     ];
 
-    const grid = document.getElementById('skillsGrid');
-    skills.forEach(s => {
-        const card = document.createElement('div');
-        card.className = 'skill-card';
-        card.innerHTML = `<h3>${s.name}</h3>`;
-        card.onclick = () => openSkill(s);
-        grid.appendChild(card);
+    let activeSkill = null;
+
+    // Рендер кнопок
+    const grid = document.getElementById('grid');
+    skills.forEach(skill => {
+        const btn = document.createElement('div');
+        btn.className = 'skill-btn';
+        btn.innerHTML = `<h3>${skill.name}</h3>`;
+        btn.onclick = () => openPage(skill);
+        grid.appendChild(btn);
     });
 
-    let currentSkill = null;
+    function openPage(skill) {
+        activeSkill = skill;
+        document.getElementById('pageOverlay').style.display = 'flex';
+        document.getElementById('titleText').innerText = skill.name;
+        document.getElementById('daysList').innerHTML = '';
+        document.getElementById('resultArea').style.display = 'none';
 
-    function openSkill(skill) {
-        currentSkill = skill;
-        document.getElementById('mainPage').style.display = 'none';
-        document.getElementById('exercisePage').style.display = 'flex';
-        document.getElementById('categoryTitle').innerText = skill.name;
-        
-        let inputsHtml = '';
+        let html = '';
         if(skill.type === 'count') {
-            inputsHtml = `<input type="number" id="max1" placeholder="Ваш поточний максимум">`;
-            document.getElementById('targetArea').innerHTML = `<input type="number" id="goal" placeholder="Ваша ціль (кількість)">`;
+            html = `<div class="input-group">
+                <label>Твій поточний максимум</label>
+                <input type="number" id="val1" placeholder="Введіть число">
+            </div>`;
+            if(skill.goal) {
+                document.getElementById('goalSection').innerHTML = `<div class="input-group">
+                    <label>Цільова кількість</label>
+                    <input type="number" id="goalVal" placeholder="Наприклад: 50">
+                </div>`;
+            } else {
+                document.getElementById('goalSection').innerHTML = '';
+            }
         } else {
-            inputsHtml = skill.req.map((r, i) => `<input type="number" id="max${i+1}" placeholder="Макс. у ${r}">`).join('');
-            document.getElementById('targetArea').innerHTML = '';
-        }
-        document.getElementById('inputsArea').innerHTML = inputsHtml;
-    }
-
-    function goBack() {
-        document.getElementById('mainPage').style.display = 'block';
-        document.getElementById('exercisePage').style.display = 'none';
-        document.getElementById('finalPlan').innerHTML = '';
-    }
-
-    function generateWorkout() {
-        const plan = document.getElementById('finalPlan');
-        plan.innerHTML = '<h3>Ваш план на місяць:</h3>';
-        
-        // Логіка розрахунку (спрощена для прикладу)
-        for(let week = 1; week <= 4; week++) {
-            plan.innerHTML += `
-                <div class="day">
-                    <h4>ТИЖДЕНЬ ${week}</h4>
-                    <p>• Тренування А: 4 підходи по 80% від макс.</p>
-                    <p>• Тренування Б: Негативні повторення + статика.</p>
-                    <p>• Відпочинок: 2 дні між важкими сесіями.</p>
+            html = skill.req.map((r, i) => `
+                <div class="input-group">
+                    <label>Макс. у ${r}</label>
+                    <input type="number" id="val${i+1}" placeholder="Твій макс">
                 </div>
-            `;
+            `).join('');
+            document.getElementById('goalSection').innerHTML = '';
         }
-        plan.scrollIntoView({behavior: "smooth"});
+        document.getElementById('dynamicInputs').innerHTML = html;
+    }
+
+    function closePage() {
+        document.getElementById('pageOverlay').style.display = 'none';
+    }
+
+    // ТУТ ЗАКІНЧУЄТЬСЯ ПЕРША ЧАСТИНА (СТРУКТУРА)
+    // ДРУГА ЧАСТИНА (АЛГОРИТМ ТРЕНУВАННЯ НА 30 ДНІВ) БУДЕ НИЖЧЕ
+    function startGeneration() {
+        const resultArea = document.getElementById('resultArea');
+        const daysList = document.getElementById('daysList');
+        daysList.innerHTML = '';
+        resultArea.style.display = 'block';
+
+        const val1 = parseInt(document.getElementById('val1')?.value) || 0;
+        const goal = parseInt(document.getElementById('goalVal')?.value) || val1 + 10;
+
+        for (let i = 1; i <= 30; i++) {
+            const dayCard = document.createElement('div');
+            dayCard.className = 'day-card';
+            
+            // Логіка відпочинку (кожен 3-й день)
+            if (i % 3 === 0) {
+                dayCard.classList.add('rest');
+                dayCard.innerHTML = `<h4>ДЕНЬ ${i} <span>ВІДПОЧИНОК</span></h4>
+                                     <p class="rest-text">М'язи ростуть, коли ти спиш. Сьогодні повне відновлення, розтяжка або легка прогулянка.</p>`;
+            } else {
+                dayCard.classList.add('work');
+                let intensity = i <= 15 ? 0.7 : 0.85; // Підвищення інтенсивності після 2 тижнів
+                let reps = Math.round(val1 * intensity);
+                if (reps < 1) reps = 1;
+
+                dayCard.innerHTML = `<h4>ДЕНЬ ${i} <span>ТРЕНУВАННЯ</span></h4>
+                    <div class="exercise-item"><b>Розминка:</b> 5 хв суглобова гімнастика + планка 60с.</div>
+                    <div class="exercise-item"><b>Основна вправа (${activeSkill.name}):</b> 4 підходи по ${reps} разів.</div>
+                    <div class="exercise-item"><b>Додатково:</b> ${activeSkill.type === 'skill' ? 'Негативні фази 3х5' : 'Австралійські підтягування 3х12'}.</div>
+                    <div class="exercise-item"><b>Відпочинок між підходами:</b> 90-120 секунд.</div>
+                    <div class="exercise-item"><b>Заминка:</b> Розтяжка робочих груп м'язів.</div>`;
+            }
+            daysList.appendChild(dayCard);
+        }
+        
+        // Скрол до результату
+        resultArea.scrollIntoView({ behavior: 'smooth' });
     }
 </script>
-</body>
-</html>
