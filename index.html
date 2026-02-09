@@ -1,0 +1,15 @@
+<div class="skill-card" onclick="openModal('pullups')">
+    <div class="icon">🚀</div>
+    <h3>Макс. Підтягування</h3>
+    <p>Прогресія від твого максимуму</p>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle">Назва вправи</h2>
+        <input type="number" id="currentMax" placeholder="Твій поточний макс.">
+        <button class="gen-btn" onclick="generatePlan()">Згенерувати план на місяць</button>
+        <div id="planResult" class="plan-area"></div>
+    </div>
+</div>
