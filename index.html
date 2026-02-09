@@ -1,450 +1,650 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ЧЕРЕЗ СИЛУ | PATH 🪬</title>
+    <title>ЧЕРЕЗ СИЛУ | THE PATH 🪬</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon: #ff6b00;
             --neon-glow: rgba(255, 107, 0, 0.4);
-            --bg: #050505;
-            --card-bg: rgba(15, 15, 15, 0.95);
-            --border: rgba(255, 255, 255, 0.08);
+            --bg-deep: #050505;
+            --bg-card: #0d0d0d;
+            --border-color: rgba(255, 255, 255, 0.07);
+            --text-gold: #ffcc00;
             --text-main: #ffffff;
             --text-dim: #888888;
+            --transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
+        /* Reset & Base */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            outline: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: var(--bg);
+            background-color: var(--bg-deep);
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, system-ui, sans-serif;
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Стиль заголовка */
+        /* Background FX */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 107, 0, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(255, 107, 0, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon); }
+
+        /* Layout */
         header {
-            padding: 80px 20px 40px;
+            padding: 100px 20px 60px;
             text-align: center;
-            background: radial-gradient(circle at top, #1a0d00 0%, var(--bg) 70%);
+            position: relative;
         }
 
-        .logo {
-            font-size: 3rem;
+        .logo-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-logo {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 900;
-            letter-spacing: 8px;
-            text-transform: uppercase;
+            letter-spacing: 12px;
+            color: var(--text-main);
+            text-shadow: 0 0 40px var(--neon-glow);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-accent {
             color: var(--neon);
-            text-shadow: 0 0 30px var(--neon-glow);
-            margin-bottom: 10px;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.7;
         }
 
         .tagline {
+            font-size: 0.75rem;
             color: var(--text-dim);
-            font-size: 0.9rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-top: 20px;
+            font-weight: 300;
         }
 
-        /* Сітка вправ */
         .container {
-            padding: 20px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .skills-grid {
+        /* Exercise Grid */
+        .exercise-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            perspective: 1000px;
         }
 
-        .skill-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 30px 15px;
-            border-radius: 24px;
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 40px 20px;
+            border-radius: 30px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
         }
 
-        .skill-card::before {
+        .card::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(255,107,0,0.05) 0%, transparent 100%);
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 107, 0, 0.1));
             opacity: 0;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
-        .skill-card:hover {
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
             border-color: var(--neon);
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px rgba(255,107,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(255,107,0,0.1);
         }
 
-        .skill-card:hover::before { opacity: 1; }
+        .card:hover::after { opacity: 1; }
 
-        .skill-card h3 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #efefef;
-            z-index: 1;
-            position: relative;
+        .card h3 {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            transition: var(--transition);
         }
 
-        /* Модальне вікно (Повний екран) */
-        .overlay {
+        .card:hover h3 { color: var(--neon); }
+
+        /* Overlay & Modals */
+        .full-page-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
-            z-index: 1000;
+            inset: 0;
+            background: var(--bg-deep);
+            z-index: 2000;
             display: none;
             flex-direction: column;
             overflow-y: auto;
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .nav {
-            padding: 25px;
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .overlay-nav {
+            padding: 30px;
             display: flex;
             align-items: center;
-            background: rgba(5,5,5,0.9);
-            backdrop-filter: blur(20px);
+            justify-content: space-between;
             position: sticky;
             top: 0;
-            border-bottom: 1px solid var(--border);
-            z-index: 1100;
+            background: rgba(5,5,5,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 10;
         }
 
-        .back-btn {
-            background: none;
+        .close-btn {
+            background: rgba(255,255,255,0.05);
             border: none;
-            color: var(--neon);
-            font-size: 2.5rem;
+            color: var(--text-main);
+            width: 50px; height: 50px;
+            border-radius: 50%;
             cursor: pointer;
-            margin-right: 20px;
+            font-size: 1.5rem;
+            transition: var(--transition);
         }
 
-        .nav h2 {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+        .close-btn:hover { background: var(--neon); color: #000; }
 
-        /* Форма вводу */
-        .content {
-            padding: 40px 20px;
+        .overlay-title { font-size: 1.2rem; letter-spacing: 3px; }
+
+        /* Form Controls */
+        .config-panel {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 60px auto;
+            padding: 0 25px;
             width: 100%;
         }
 
-        .field { margin-bottom: 30px; }
-        .field label {
+        .input-group { margin-bottom: 35px; position: relative; }
+        
+        .input-group label {
             display: block;
-            margin-bottom: 12px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-dim);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
         }
 
-        input {
+        input[type="number"] {
             width: 100%;
-            background: #111;
-            border: 1px solid #222;
-            padding: 20px;
-            border-radius: 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 20px;
             color: #fff;
-            font-size: 1.2rem;
-            outline: none;
-            transition: 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            transition: var(--transition);
         }
 
-        input:focus { border-color: var(--neon); box-shadow: 0 0 15px var(--neon-glow); }
+        input:focus {
+            border-color: var(--neon);
+            background: rgba(255,107,0,0.05);
+            box-shadow: 0 0 30px rgba(255,107,0,0.1);
+        }
 
-        .main-btn {
+        .primary-btn {
             width: 100%;
             background: var(--neon);
             color: #000;
             border: none;
-            padding: 22px;
-            border-radius: 18px;
+            padding: 28px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 900;
             font-size: 1.1rem;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 10px 30px var(--neon-glow);
-            margin-top: 20px;
+            letter-spacing: 4px;
+            box-shadow: 0 15px 35px rgba(255, 107, 0, 0.3);
+            transition: var(--transition);
         }
 
-        /* Перемикач мов */
-        .lang-switcher {
+        .primary-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(255, 107, 0, 0.4);
+        }
+
+        /* Workout Results Area */
+        .plan-container { margin-top: 80px; }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .day-card {
+            background: #080808;
+            border: 1px solid var(--border-color);
+            border-radius: 35px;
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: var(--transition);
+        }
+
+        .day-card.rest { border-left: 8px solid #222; opacity: 0.5; }
+        .day-card.work { border-left: 8px solid var(--neon); }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .day-label { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; }
+        .day-type { font-size: 0.8rem; color: var(--neon); letter-spacing: 2px; font-weight: 700; }
+
+        .set-block {
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .set-block b { color: var(--neon); font-family: 'Orbitron', sans-serif; margin-bottom: 8px; font-size: 0.9rem; }
+        .set-block span { color: #ccc; font-size: 1rem; }
+
+        .rest-timer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            position: relative;
+        }
+
+        .rest-timer::before, .rest-timer::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20%;
+            height: 1px;
+            background: var(--border-color);
+        }
+        .rest-timer::before { left: 10%; }
+        .rest-timer::after { right: 10%; }
+
+        /* Bottom Lang Switcher */
+        .lang-dock {
             position: fixed;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            background: rgba(20,20,20,0.8);
-            padding: 5px;
+            background: rgba(15,15,15,0.8);
+            backdrop-filter: blur(20px);
+            padding: 10px 10px;
             border-radius: 100px;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
+            border: 1px solid var(--border-color);
+            z-index: 5000;
         }
 
-        .l-btn {
-            padding: 10px 20px;
+        .lang-item {
+            padding: 12px 25px;
             border-radius: 100px;
-            border: none;
-            background: none;
-            color: #555;
-            font-weight: 700;
-            font-size: 0.8rem;
             cursor: pointer;
-            transition: 0.3s;
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--text-dim);
+            transition: var(--transition);
         }
 
-        .l-btn.active { background: var(--neon); color: #000; }
+        .lang-item.active { background: var(--neon); color: #000; }
 
-        /* Картка дня в тренуванні */
-        .day-box {
-            background: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 25px;
+        @media (max-width: 768px) {
+            header { padding: 60px 20px; }
+            .day-card { padding: 25px; }
+            .day-label { font-size: 1.4rem; }
         }
-
-        .day-box.rest { border-left: 5px solid #333; opacity: 0.6; }
-        .day-box.work { border-left: 5px solid var(--neon); }
-
-        .day-num { font-size: 1.5rem; font-weight: 900; color: var(--neon); margin-bottom: 20px; display: block; }
-        
-        .ex-item {
-            background: rgba(255,255,255,0.02);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-
-        .ex-item b { color: var(--neon); display: block; margin-bottom: 5px; }
-        .ex-item p { font-size: 0.9rem; color: #aaa; }
     </style>
 </head>
 <body>
-
 <header>
-    <h1 class="logo" id="ui-logo">ЧЕРЕЗ СИЛУ</h1>
-    <div class="tagline">🪬 PATH OF THE WARRIOR</div>
+    <div class="logo-container">
+        <h1 class="main-logo" id="ui-logo-text">ЧЕРЕЗ СИЛУ</h1>
+        <h1 class="main-logo logo-accent" id="ui-logo-blur">ЧЕРЕЗ СИЛУ</h1>
+    </div>
+    <p class="tagline" id="ui-tagline">EVOLUTION OR EXTINCTION</p>
 </header>
 
 <div class="container">
-    <div class="skills-grid" id="mainGrid"></div>
+    <div class="exercise-grid" id="main-grid">
+        </div>
 </div>
 
-<div class="overlay" id="skillOverlay">
-    <div class="nav">
-        <button class="back-btn" onclick="closeOverlay()">✕</button>
-        <h2 id="ui-title">Вправа</h2>
+<div class="full-page-overlay" id="skill-overlay">
+    <div class="overlay-nav">
+        <h2 class="overlay-title" id="ui-overlay-title">ВЫБОР УПРАЖНЕНИЯ</h2>
+        <button class="close-btn" onclick="closeOverlay()">✕</button>
     </div>
-    <div class="content">
-        <div id="ui-inputs"></div>
-        <div id="ui-goal"></div>
-        <button class="main-btn" onclick="generate()" id="ui-gen-btn">Згенерувати</button>
-        <div id="ui-results"></div>
+    
+    <div class="config-panel">
+        <div id="dynamic-inputs">
+            </div>
+        <div id="goal-container">
+            </div>
+        <button class="primary-btn" onclick="generateProgram()" id="ui-btn-generate">
+            СОЗДАТЬ ПРОГРАММУ
+        </button>
+        
+        <div id="program-output" class="plan-container">
+            </div>
     </div>
 </div>
 
-<div class="lang-switcher">
-    <button class="l-btn active" onclick="setLang('ua')" id="l-ua">UA</button>
-    <button class="l-btn" onclick="setLang('en')" id="l-en">EN</button>
-    <button class="l-btn" onclick="setLang('ru')" id="l-ru">RU</button>
+<div class="lang-dock">
+    <div class="lang-item active" onclick="setLanguage('ru')" id="lang-ru">RU</div>
+    <div class="lang-item" onclick="setLanguage('ua')" id="lang-ua">UA</div>
+    <div class="lang-item" onclick="setLanguage('en')" id="lang-en">EN</div>
 </div>
 
 <script>
-    let currentLang = 'ua';
-    
-    // ПОВНИЙ МАСИВ - 55 ВПРАВ (ЧАСТИНА 1: ПЕРШІ 20)
-    const exercises = [
-        { id: 1, type: 'count', goal: true, ua: 'Збільшити підтягування', en: 'Increase Pull-ups', ru: 'Увеличить подтягивания' },
-        { id: 2, type: 'count', goal: true, ua: 'Збільшити віджимання', en: 'Increase Push-ups', ru: 'Увеличить отжимания' },
-        { id: 3, type: 'count', goal: true, ua: 'Бруси (Кількість)', en: 'Dips (Reps)', ru: 'Брусья (Кол-во)' },
-        { id: 4, type: 'skill', ua: 'Вихід силою', en: 'Muscle Up', ru: 'Выход силой', req: ['Pull-ups', 'Dips', 'Explosive Power'] },
-        { id: 5, type: 'skill', ua: 'Передній віс', en: 'Front Lever', ru: 'Передний вис', req: ['Pull-ups', 'Leg Raises', 'Core Hold'] },
-        { id: 6, type: 'skill', ua: 'Стійка на руках', en: 'Handstand', ru: 'Стойка на руках', req: ['Wall Pushups', 'Plank (sec)', 'Handstand (sec)'] },
-        { id: 7, type: 'skill', ua: 'Планш (Горизонт)', en: 'Planche', ru: 'Планш (Горизонт)', req: ['Pushups', 'Pseudo Pushups', 'Plank'] },
-        { id: 8, type: 'skill', ua: 'Прапор (Human Flag)', en: 'Human Flag', ru: 'Флаг', req: ['Pullups', 'Dips', 'Obliques'] },
-        { id: 9, type: 'skill', ua: 'Ластівка', en: 'Back Lever', ru: 'Ласточка', req: ['Pullups', 'Lower Back', 'Skin the Cat'] },
-        { id: 10, type: 'count', goal: true, ua: 'Підтягування на одній', en: 'One Arm Pull-up', ru: 'Подтягивания на одной' },
-        { id: 11, type: 'count', goal: true, ua: 'Віджимання в стійці', en: 'Handstand Pushups', ru: 'Отжимания в стойке' },
-        { id: 12, type: 'count', goal: true, ua: 'L-Sit (Кутик)', en: 'L-Sit Hold', ru: 'Уголок L-Sit' },
-        { id: 13, type: 'count', goal: true, ua: 'Вибухові підтягування', en: 'Explosive Pullups', ru: 'Взрывные подтягивания' },
-        { id: 14, type: 'count', goal: true, ua: 'Друкарська машинка', en: 'Typewriter Pullups', ru: 'Печатная машинка' },
-        { id: 15, type: 'count', goal: true, ua: 'Діамантові віджимання', en: 'Diamond Pushups', ru: 'Алмазные отжимания' },
-        { id: 16, type: 'count', goal: true, ua: 'Широкі підтягування', en: 'Wide Pullups', ru: 'Широкие подтягивания' },
-        { id: 17, type: 'count', goal: true, ua: 'Підтягування лучника', en: 'Archer Pullups', ru: 'Подтягивания лучника' },
-        { id: 18, type: 'count', goal: true, ua: 'Віджимання лучника', en: 'Archer Pushups', ru: 'Отжимания лучника' },
-        { id: 19, type: 'skill', ua: 'Горизонт на ліктях', en: 'Elbow Lever', ru: 'Горизонт на локтях', req: ['Plank', 'Pushups', 'Balance'] },
-        { id: 20, type: 'count', goal: true, ua: 'Вузькі віджимання', en: 'Close Grip Pushups', ru: 'Узкие отжимания' },
-        // ... РЕШТА 35 ВПРАВ БУДУТЬ У ЧАСТИНІ 2
-                { id: 21, type: 'count', goal: true, ua: 'Присідання на одній', en: 'Pistol Squats', ru: 'Приседания на одной' },
-        { id: 22, type: 'count', goal: true, ua: 'Підняття ніг до турніка', en: 'Toes to Bar', ru: 'Носки к перекладине' },
-        { id: 23, type: 'count', goal: false, ua: 'Вис на час (Хват)', en: 'Dead Hang (Time)', ru: 'Вис на время' },
-        { id: 24, type: 'count', goal: true, ua: 'Віджимання від лавки', en: 'Bench Dips', ru: 'Отжимания от скамьи' },
-        { id: 25, type: 'count', goal: true, ua: 'Берпі', en: 'Burpees', ru: 'Берпи' },
-        { id: 26, type: 'count', goal: true, ua: 'V-подібні скручування', en: 'V-Ups', ru: 'V-образные складки' },
-        { id: 27, type: 'count', goal: false, ua: 'Планка (Макс. час)', en: 'Plank (Max Time)', ru: 'Планка (Макс. время)' },
-        { id: 28, type: 'count', goal: true, ua: 'Підтягування зворотним хватом', en: 'Chin-ups', ru: 'Подтягивания обратным хватом' },
-        { id: 29, type: 'count', goal: true, ua: 'Віджимання Ганнібала', en: 'Hannibal Pushups', ru: 'Отжимания Ганнибала' },
-        { id: 30, type: 'count', goal: true, ua: 'Вибухові віджимання', en: 'Plyo Pushups', ru: 'Взрывные отжимания' },
-        { id: 31, type: 'count', goal: true, ua: 'Глибокі віджимання', en: 'Deep Pushups', ru: 'Глубокие отжимания' },
-        { id: 32, type: 'count', goal: true, ua: 'Підтягування за голову', en: 'Behind Neck Pullups', ru: 'Подтягивания за голову' },
-        { id: 33, type: 'count', goal: true, ua: 'Корейські віджимання (Бруси)', en: 'Korean Dips', ru: 'Корейские отжимания' },
-        { id: 34, type: 'count', goal: true, ua: 'Стрибки на бокс', en: 'Box Jumps', ru: 'Прыжки на бокс' },
-        { id: 35, type: 'count', goal: true, ua: 'Випади (Стрибкові)', en: 'Jumping Lunges', ru: 'Выпады в прыжке' },
-        { id: 36, type: 'count', goal: true, ua: 'Скандинавські згинання', en: 'Nordic Curls', ru: 'Скандинавские сгибания' },
-        { id: 37, type: 'count', goal: true, ua: 'Підтягування з вагою', en: 'Weighted Pullups', ru: 'Подтягивания с весом' },
-        { id: 38, type: 'count', goal: true, ua: 'Бруси з вагою', en: 'Weighted Dips', ru: 'Брусья с весом' },
-        { id: 39, type: 'count', goal: true, ua: 'Віджимання на пальцях', en: 'Finger Pushups', ru: 'Отжимания на пальцах' },
-        { id: 40, type: 'count', goal: true, ua: 'Підтягування на рушнику', en: 'Towel Pullups', ru: 'Подтягивания на полотенце' },
-        { id: 41, type: 'count', goal: true, ua: 'Маятник (Прес)', en: 'Pendulums', ru: 'Маятник' },
-        { id: 42, type: 'count', goal: true, ua: 'Велосипед', en: 'Bicycle Crunches', ru: 'Велосипед' },
-        { id: 43, type: 'count', goal: true, ua: 'Віджимання псевдо-планш', en: 'Pseudo Pushups', ru: 'Отжимания псевдо-планш' },
-        { id: 44, type: 'count', goal: true, ua: 'Нейтральні підтягування', en: 'Neutral Pullups', ru: 'Нейтральные подтягивания' },
-        { id: 45, type: 'count', goal: true, ua: 'Віджимання від стіни', en: 'Wall Pushups', ru: 'Отжимания от стены' },
-        { id: 46, type: 'count', goal: true, ua: 'Повільні виходи на 2', en: 'Slow Muscle Ups', ru: 'Медленные выходы' },
-        { id: 47, type: 'count', goal: false, ua: 'Вис на одній руці', en: 'One Arm Hang', ru: 'Вис на одной руке' },
-        { id: 48, type: 'count', goal: true, ua: 'Підтягування Командо', en: 'Commando Pullups', ru: 'Подтягивания Командо' },
-        { id: 49, type: 'count', goal: true, ua: 'Супермен (Віджимання)', en: 'Superman Pushups', ru: 'Супермен (Отжимания)' },
-        { id: 50, type: 'count', goal: true, ua: 'Віджимання на зап’ястях', en: 'Wrist Pushups', ru: 'Отжимания на запястьях' },
-        { id: 51, type: 'count', goal: true, ua: 'Підтягування 360', en: '360 Pullups', ru: 'Подтягивания 360' },
-        { id: 52, type: 'count', goal: false, ua: 'Вис Ганнібала (Статика)', en: 'Hannibal Hold', ru: 'Вис Ганнибала' },
-        { id: 53, type: 'count', goal: true, ua: 'Драконячий прапор', en: 'Dragon Flag', ru: 'Драконий флаг' },
-        { id: 54, type: 'count', goal: true, ua: 'Залізний хрест (Підлога)', en: 'Iron Cross (Floor)', ru: 'Железный крест (Пол)' },
-        { id: 55, type: 'count', goal: true, ua: 'Горизонт (Ноги нарізно)', en: 'Straddle Planche', ru: 'Горизонт (Ноги врозь)' }
+    let currentLang = 'ru';
+
+    // ПОВНИЙ СПИСОК 55 ВПРАВ (RU, UA, EN)
+    const exerciseDatabase = [
+        { id: 1, type: 'count', ru: 'Подтягивания', ua: 'Підтягування', en: 'Pull-ups' },
+        { id: 2, type: 'count', ru: 'Отжимания от пола', ua: 'Віджимання від підлоги', en: 'Push-ups' },
+        { id: 3, type: 'count', ru: 'Брусья', ua: 'Бруси', en: 'Dips' },
+        { id: 4, type: 'skill', ru: 'Выход силой', ua: 'Вихід силою', en: 'Muscle Up', req: ['Pull-ups', 'Dips', 'Explosive'] },
+        { id: 5, type: 'skill', ru: 'Передний вис', ua: 'Передній віс', en: 'Front Lever', req: ['Pull-ups', 'Leg Raises', 'Core'] },
+        { id: 6, type: 'skill', ru: 'Стойка на руках', ua: 'Стійка на руках', en: 'Handstand', req: ['Wall Pushups', 'Plank', 'Balance'] },
+        { id: 7, type: 'skill', ru: 'Горизонт (Планш)', ua: 'Горизонт (Планш)', en: 'Planche', req: ['Pseudo Pushups', 'Lean', 'Plank'] },
+        { id: 8, type: 'skill', ru: 'Флаг дракона', ua: 'Прапор дракона', en: 'Dragon Flag', req: ['Abs', 'Leg Raises', 'Hold'] },
+        { id: 9, type: 'skill', ru: 'Человеческий флаг', ua: 'Людський прапор', en: 'Human Flag', req: ['Pull-ups', 'Obliques', 'Dips'] },
+        { id: 10, type: 'count', ru: 'Подтягивания на одной', ua: 'Підтягування на одній', en: 'One Arm Pull-up' },
+        { id: 11, type: 'count', ru: 'Отжимания в стойке', ua: 'Віджимання в стійці', en: 'HSPU' },
+        { id: 12, type: 'count', ru: 'L-Sit (Уголок)', ua: 'L-Sit (Кутик)', en: 'L-Sit' },
+        { id: 13, type: 'count', ru: 'Взрывные подтягивания', ua: 'Вибухові підтягування', en: 'Explosive Pullups' },
+        { id: 14, type: 'count', ru: 'Печатная машинка', ua: 'Друкарська машинка', en: 'Typewriter' },
+        { id: 15, type: 'count', ru: 'Алмазные отжимания', ua: 'Діамантові віджимання', en: 'Diamond Pushups' },
+        { id: 16, type: 'count', ru: 'Широкие подтягивания', ua: 'Широкі підтягування', en: 'Wide Pullups' },
+        { id: 17, type: 'count', ru: 'Подтягивания Лучника', ua: 'Підтягування Лучника', en: 'Archer Pullups' },
+        { id: 18, type: 'count', ru: 'Отжимания Лучника', ua: 'Віджимання Лучника', en: 'Archer Pushups' },
+        { id: 19, type: 'skill', ru: 'Горизонт на локтях', ua: 'Горизонт на ліктях', en: 'Elbow Lever', req: ['Plank', 'Balance'] },
+        { id: 20, type: 'count', ru: 'Узкие отжимания', ua: 'Вузькі віджимання', en: 'Close Grip Pushups' },
+        { id: 21, type: 'count', ru: 'Приседания на одной', ua: 'Присідання на одній', en: 'Pistol Squats' },
+        { id: 22, type: 'count', ru: 'Поднятие ног к перекладине', ua: 'Підняття ніг до перекладини', en: 'Toes to Bar' },
+        { id: 23, type: 'count', ru: 'Вис на время', ua: 'Вис на час', en: 'Dead Hang' },
+        { id: 24, type: 'count', ru: 'Отжимания от скамьи', ua: 'Віджимання від лавки', en: 'Bench Dips' },
+        { id: 25, type: 'count', ru: 'Берпи', ua: 'Берпі', en: 'Burpees' },
+        { id: 26, type: 'count', ru: 'V-складка на пресс', ua: 'V-складка на прес', en: 'V-Ups' },
+        { id: 27, type: 'count', ru: 'Планка (секунды)', ua: 'Планка (секунди)', en: 'Plank' },
+        { id: 28, type: 'count', ru: 'Подтягивания обратным хватом', ua: 'Підтягування зворотним хватом', en: 'Chin-ups' },
+        { id: 29, type: 'count', ru: 'Отжимания Ганнибала', ua: 'Віджимання Ганнібала', en: 'Hannibal Pushups' },
+        { id: 30, type: 'count', ru: 'Плио-отжимания', ua: 'Пліо-віджимання', en: 'Plyo Pushups' },
+        { id: 31, type: 'count', ru: 'Глубокие отжимания', ua: 'Глибокі віджимання', en: 'Deep Pushups' },
+        { id: 32, type: 'count', ru: 'Подтягивания за голову', ua: 'Підтягування за голову', en: 'Behind Neck Pulls' },
+        { id: 33, type: 'count', ru: 'Корейские брусья', ua: 'Корейські бруси', en: 'Korean Dips' },
+        { id: 34, type: 'count', ru: 'Прыжки на бокс', ua: 'Стрибки на бокс', en: 'Box Jumps' },
+        { id: 35, type: 'count', ru: 'Выпады в прыжке', ua: 'Випади в стрибку', en: 'Jumping Lunges' },
+        { id: 36, type: 'count', ru: 'Скандинавские сгибания', ua: 'Скандинавські згинання', en: 'Nordic Curls' },
+        { id: 37, type: 'count', ru: 'Подтягивания с весом', ua: 'Підтягування з вагою', en: 'Weighted Pullups' },
+        { id: 38, type: 'count', ru: 'Брусья с весом', ua: 'Бруси з вагою', en: 'Weighted Dips' },
+        { id: 39, type: 'count', ru: 'Отжимания на пальцах', ua: 'Віджимання на пальцях', en: 'Finger Pushups' },
+        { id: 40, type: 'count', ru: 'Подтягивания на полотенце', ua: 'Підтягування на рушнику', en: 'Towel Pullups' },
+        { id: 41, type: 'count', ru: 'Маятник (пресс)', ua: 'Маятник (прес)', en: 'Pendulum' },
+        { id: 42, type: 'count', ru: 'Велосипед', ua: 'Велосипед', en: 'Bicycle' },
+        { id: 43, type: 'count', ru: 'Псевдо-планш отжимания', ua: 'Псевдо-планш віджимання', en: 'Pseudo Planche' },
+        { id: 44, type: 'count', ru: 'Нейтральный хват', ua: 'Нейтральний хват', en: 'Neutral Pullups' },
+        { id: 45, type: 'count', ru: 'Отжимания от стены', ua: 'Віджимання від стіни', en: 'Wall Pushups' },
+        { id: 46, type: 'count', ru: 'Медленные выходы', ua: 'Повільні виходи', en: 'Slow Muscle Ups' },
+        { id: 47, type: 'count', ru: 'Вис на одной руке', ua: 'Вис на одній руці', en: 'One Arm Hang' },
+        { id: 48, type: 'count', ru: 'Подтягивания Коммандо', ua: 'Підтягування Командо', en: 'Commando' },
+        { id: 49, type: 'count', ru: 'Отжимания Супермена', ua: 'Віджимання Супермена', en: 'Superman Pushups' },
+        { id: 50, type: 'count', ru: 'Отжимания на запястьях', ua: 'Віджимання на зап’ястях', en: 'Wrist Pushups' },
+        { id: 51, type: 'count', ru: 'Подтягивания 360', ua: 'Підтягування 360', en: '360 Pullups' },
+        { id: 52, type: 'count', ru: 'Вис Ганнибала', ua: 'Вис Ганнібала', en: 'Hannibal Hold' },
+        { id: 53, type: 'count', ru: 'Подтягивания на одной (негатив)', ua: 'На одній (негатив)', en: 'OAP Negatives' },
+        { id: 54, type: 'count', ru: 'Железный крест (пол)', ua: 'Залізний хрест (підлога)', en: 'Iron Cross Floor' },
+        { id: 55, type: 'count', ru: 'Горизонт ноги врозь', ua: 'Горизонт ноги нарізно', en: 'Straddle Planche' }
     ];
 
-    const uiTexts = {
-        ua: { logo: "ЧЕРЕЗ СИЛУ", gen: "СТВОРИТИ ПЛАН", cur: "Ваш макс", target: "Ціль", planTitle: "ПЛАН НА 30 ДНІВ", rest: "ВІДПОЧИНОК", workout: "ТРЕНУВАННЯ", sets: "Підходи", break: "Відпочинок" },
-        en: { logo: "THROUGH FORCE", gen: "CREATE PLAN", cur: "Your max", target: "Goal", planTitle: "30 DAYS PLAN", rest: "REST DAY", workout: "WORKOUT", sets: "Sets", break: "Rest" },
-        ru: { logo: "ЧЕРЕЗ СИЛУ", gen: "СОЗДАТЬ ПЛАН", cur: "Ваш макс", target: "Цель", planTitle: "ПЛАН НА 30 ДНЕЙ", rest: "ОТДЫХ", workout: "ТРЕНИРОВКА", sets: "Подходы", break: "Отдых" }
+    const dict = {
+        ru: { max: "Ваш текущий максимум", goal: "Ваша цель (целое число)", create: "СОЗДАТЬ ПРОГРАММУ", workout: "ТРЕНИРОВКА", rest: "ОТДЫХ", set: "ПОДХОД", pause: "ОТДЫХ МЕЖДУ ПОДХОДАМИ", rep: "повторений", sec: "секунд" },
+        ua: { max: "Ваш поточний максимум", goal: "Ваша ціль (ціле число)", create: "СТВОРИТИ ПРОГРАМУ", workout: "ТРЕНУВАННЯ", rest: "ВІДПОЧИНОК", set: "ПІДХІД", pause: "ВІДПОЧИНОК МІЖ ПІДХОДАМИ", rep: "повторень", sec: "секунд" },
+        en: { max: "Your current max", goal: "Your target goal", create: "CREATE PROGRAM", workout: "WORKOUT", rest: "REST DAY", set: "SET", pause: "REST BETWEEN SETS", rep: "reps", sec: "sec" }
     };
 
-    function setLang(lang) {
+    function setLanguage(lang) {
         currentLang = lang;
-        document.querySelectorAll('.l-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('l-' + lang).classList.add('active');
-        document.getElementById('ui-logo').innerText = uiTexts[lang].logo;
-        document.getElementById('ui-gen-btn').innerText = uiTexts[lang].gen;
+        document.querySelectorAll('.lang-item').forEach(i => i.classList.remove('active'));
+        document.getElementById('lang-' + lang).classList.add('active');
+        
+        // Оновлення UI
+        const t = dict[lang];
+        document.getElementById('ui-btn-generate').innerText = t.create;
         renderGrid();
     }
 
     function renderGrid() {
-        const grid = document.getElementById('mainGrid');
+        const grid = document.getElementById('main-grid');
         grid.innerHTML = '';
-        exercises.forEach(ex => {
-            const card = document.createElement('div');
-            card.className = 'skill-card';
-            card.innerHTML = `<h3>${ex[currentLang]}</h3>`;
-            card.onclick = () => openOverlay(ex);
-            grid.appendChild(card);
+        exerciseDatabase.forEach(ex => {
+            const el = document.createElement('div');
+            el.className = 'card';
+            el.innerHTML = `<h3>${ex[currentLang]}</h3>`;
+            el.onclick = () => openOverlay(ex);
+            grid.appendChild(el);
         });
     }
 
-    let activeEx = null;
+    let selectedEx = null;
     function openOverlay(ex) {
-        activeEx = ex;
-        const overlay = document.getElementById('skillOverlay');
+        selectedEx = ex;
+        const overlay = document.getElementById('skill-overlay');
         overlay.style.display = 'flex';
-        document.getElementById('ui-title').innerText = ex[currentLang];
-        document.getElementById('ui-results').innerHTML = '';
+        document.body.style.overflow = 'hidden';
+        document.getElementById('ui-overlay-title').innerText = ex[currentLang];
         
-        let inputsHtml = `<div class="field"><label>${uiTexts[currentLang].cur}</label><input type="number" id="m1" placeholder="0"></div>`;
+        let inputsHtml = `<div class="input-group"><label>${dict[currentLang].max}</label><input type="number" id="val-1" value="5"></div>`;
         if(ex.type === 'skill') {
-            inputsHtml = ex.req.map((r, i) => `<div class="field"><label>${r} (Max)</label><input type="number" id="m${i+1}" placeholder="0"></div>`).join('');
+            inputsHtml = ex.req.map((r, i) => `<div class="input-group"><label>${r} (Max)</label><input type="number" id="val-${i+1}" value="10"></div>`).join('');
         }
-        document.getElementById('ui-inputs').innerHTML = inputsHtml;
-        document.getElementById('ui-goal').innerHTML = (ex.type === 'count' && ex.goal) ? `<div class="field"><label>${uiTexts[currentLang].target}</label><input type="number" id="gVal" placeholder="0"></div>` : '';
+        document.getElementById('dynamic-inputs').innerHTML = inputsHtml;
+        document.getElementById('goal-container').innerHTML = ex.type === 'count' ? `<div class="input-group"><label>${dict[currentLang].goal}</label><input type="number" id="target-val" value="15"></div>` : '';
     }
 
     function closeOverlay() {
-        document.getElementById('skillOverlay').style.display = 'none';
+        document.getElementById('skill-overlay').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 
     renderGrid();
-    function generate() {
-        const resArea = document.getElementById('ui-results');
-        resArea.innerHTML = `<h3 style="text-align:center; color:var(--neon); margin:40px 0;">${uiTexts[currentLang].planTitle}</h3>`;
-        
-        const baseValue = parseInt(document.getElementById('m1').value) || 1;
-        const targetValue = parseInt(document.getElementById('gVal')?.value) || baseValue + 10;
+</script>
+    /**
+     * ГЕНЕРАТОР ТРЕНУВАЛЬНОГО ПЛАНУ
+     * Логіка базується на циклічному прогресі: 
+     * 2 дні тренувань (різного типу) + 1 день повного відновлення.
+     */
+    function generateProgram() {
+        const output = document.getElementById('program-output');
+        output.innerHTML = ''; // Очищення перед генерацією
 
+        const t = dict[currentLang];
+        const baseValue = parseInt(document.getElementById('val-1').value) || 1;
+        const targetValue = parseInt(document.getElementById('target-val')?.value) || Math.round(baseValue * 1.5);
+
+        // Додаємо заголовок секції результатів
+        const header = document.createElement('div');
+        header.className = 'section-header';
+        header.innerHTML = `<h2 style="font-family:'Orbitron'; letter-spacing:5px;">${t.planTitle}</h2>`;
+        output.appendChild(header);
+
+        // Генерація циклу на 30 днів
         for (let day = 1; day <= 30; day++) {
-            const box = document.createElement('div');
-            box.className = 'day-box';
+            const dayCard = document.createElement('div');
+            dayCard.className = 'day-card';
             
-            // Логіка відпочинку
+            // ЛОГІКА ВІДПОЧИНКУ (Кожен 3-й день)
             if (day % 3 === 0) {
-                box.classList.add('rest');
-                box.innerHTML = `
-                    <span class="day-num">DAY ${day}</span>
-                    <h4 style="color:#666">${uiTexts[currentLang].rest}</h4>
-                    <p style="color:#555">М'язи відновлюються. Зроби легку розтяжку та вис на турніку 3 по 30 секунд.</p>
+                dayCard.classList.add('rest');
+                dayCard.innerHTML = `
+                    <div class="day-header">
+                        <span class="day-label">DAY ${day}</span>
+                        <span class="day-type">${t.rest}</span>
+                    </div>
+                    <div class="set-block" style="border-left: 2px solid #444;">
+                        <b>${currentLang === 'ru' ? 'ВОССТАНОВЛЕНИЕ' : currentLang === 'ua' ? 'ВІДНОВЛЕННЯ' : 'RECOVERY'}</b>
+                        <span>${getRestTip(day)}</span>
+                    </div>
                 `;
-            } else {
-                box.classList.add('work');
-                let dayType = day % 4; // 1: Сила, 2: Об'єм, 0: Витривалість/Піраміда
-                let prog = Math.floor(day / 5); // Прогресія +1 кожні 5 днів
-                let currentBase = baseValue + prog;
+            } 
+            // ЛОГІКА ТРЕНУВАННЯ
+            else {
+                dayCard.classList.add('work');
+                const isPowerDay = day % 2 === 0; // Чергування силового та об'ємного днів
+                const dayTypeText = isPowerDay 
+                    ? (currentLang === 'ru' ? 'СИЛОВАЯ МОЩНОСТЬ' : currentLang === 'ua' ? 'СИЛОВА ПОТУЖНІСТЬ' : 'POWER FOCUS')
+                    : (currentLang === 'ru' ? 'ОБЪЕМНАЯ ВЫНОСЛИВОСТЬ' : currentLang === 'ua' ? 'ОБ’ЄМНА ВИТРИВАЛІСТЬ' : 'VOLUME STAMINA');
 
-                let workoutHtml = `<span class="day-num">DAY ${day}</span><h4>${uiTexts[currentLang].workout}</h4>`;
+                dayCard.innerHTML = `
+                    <div class="day-header">
+                        <span class="day-label">DAY ${day}</span>
+                        <span class="day-type">${dayTypeText}</span>
+                    </div>
+                `;
+
+                // Розрахунок прогресії (кожні 6 днів навантаження зростає)
+                let progressionFactor = 1 + (Math.floor(day / 6) * 0.1);
+                let dailyMax = Math.round(baseValue * progressionFactor);
                 
-                if (dayType === 1) { // СИЛОВИЙ ДЕНЬ (АКЦЕНТ НА ЯКІСТЬ)
-                    workoutHtml += `
-                        <div class="ex-item"><b>Set 1:</b> ${Math.round(currentBase * 0.9)} reps (Максимально чиста форма)</div>
-                        <div class="ex-item"><b>Set 2-3:</b> ${Math.round(currentBase * 0.7)} reps (Повільна негативна фаза 3 сек)</div>
-                        <div class="ex-item"><b>Set 4:</b> Утримання у верхній точці до відмови</div>
-                        <div class="ex-item"><p>Відпочинок: 120-150 сек</p></div>
+                // ГЕНЕРАЦІЯ ПОКРОКОВИХ ПІДХОДІВ
+                const setsCount = isPowerDay ? 4 : 5;
+                const repsPerSet = isPowerDay 
+                    ? Math.round(dailyMax * 0.85) // Силовий: мало повторень, висока інтенсивність
+                    : Math.round(dailyMax * 0.65); // Об'ємний: багато повторень
+
+                for (let s = 1; s <= setsCount; s++) {
+                    // Блок підходу
+                    const setHtml = document.createElement('div');
+                    setHtml.className = 'set-block';
+                    setHtml.innerHTML = `
+                        <b>${t.set} #${s}</b>
+                        <span>${repsPerSet} ${selectedEx.id === 23 || selectedEx.id === 27 ? t.sec : t.rep}</span>
                     `;
-                } else if (dayType === 2) { // ОБ'ЄМНИЙ ДЕНЬ (НАКАЧКА)
-                    workoutHtml += `
-                        <div class="ex-item"><b>5 Sets:</b> ${Math.round(currentBase * 0.6)} reps</div>
-                        <div class="ex-item"><b>Додатково:</b> Віджимання/Підтягування широким хватом 3х10</div>
-                        <div class="ex-item"><b>Прес:</b> Планка 60 сек</div>
-                        <div class="ex-item"><p>Відпочинок: 60-90 сек (короткий!)</p></div>
-                    `;
-                } else { // ПІРАМІДА АБО ВИТРИВАЛІСТЬ
-                    let peak = Math.max(1, Math.round(currentBase * 0.5));
-                    workoutHtml += `
-                        <div class="ex-item"><b>Піраміда:</b> 1 -> 2 -> ${peak} -> 2 -> 1</div>
-                        <div class="ex-item"><b>Вибухові повторення:</b> 3 підходи по ${Math.round(currentBase * 0.4)}</div>
-                        <div class="ex-item"><b>Екстра:</b> Біг на місці або берпі 2 хв</div>
-                        <div class="ex-item"><p>Відпочинок: 45 сек між ступенями піраміди</p></div>
-                    `;
+                    dayCard.appendChild(setHtml);
+
+                    // Блок відпочинку (не додається після останнього підходу)
+                    if (s < setsCount) {
+                        const restHtml = document.createElement('div');
+                        restHtml.className = 'rest-timer';
+                        restHtml.innerText = `⏳ ${t.pause}: ${isPowerDay ? '120' : '90'} ${t.sec}`;
+                        dayCard.appendChild(restHtml);
+                    }
                 }
-                box.innerHTML = workoutHtml;
+
+                // Додаємо "Фінішер" для професійного вигляду
+                const finisher = document.createElement('div');
+                finisher.className = 'set-block';
+                finisher.style.marginTop = '20px';
+                finisher.style.background = 'linear-gradient(90deg, rgba(255,107,0,0.1), transparent)';
+                finisher.innerHTML = `
+                    <b style="color:var(--text-gold)">FINISHER</b>
+                    <span>${currentLang === 'ru' ? 'Удержание в негативной фазе 10 сек' : 'Утримання в негативній фазі 10 сек'}</span>
+                `;
+                dayCard.appendChild(finisher);
             }
-            resArea.appendChild(box);
+
+            output.appendChild(dayCard);
         }
-        resArea.scrollIntoView({ behavior: 'smooth' });
+
+        // Плавний скрол до результатів
+        output.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    /**
+     * Допоміжна функція для корисних порад у дні відпочинку
+     */
+    function getRestTip(day) {
+        const tipsRu = [
+            "Легкая растяжка плечевого пояса и кистей.",
+            "Контрастный душ для улучшения кровотока.",
+            "Прогулка на свежем воздухе 30-40 минут.",
+            "Миофасциальный релиз (валик) для мышц спины.",
+            "Глубокий сон не менее 8 часов — сегодня растут мышцы."
+        ];
+        const tipsUa = [
+            "Легка розтяжка плечового пояса та кистей.",
+            "Контрастний душ для покращення кровотоку.",
+            "Прогулянка на свіжому повітрі 30-40 хвилин.",
+            "Міофасціальний реліз (валик) для м'язів спини.",
+            "Глибокий сон не менше 8 годин — сьогодні ростуть м'язи."
+        ];
+        const tipsEn = [
+            "Light stretching of the shoulders and wrists.",
+            "Contrast shower to improve blood flow.",
+            "Walk in the fresh air for 30-40 minutes.",
+            "Myofascial release (foam roller) for back muscles.",
+            "Deep sleep for at least 8 hours — muscles grow today."
+        ];
+
+        const list = currentLang === 'ru' ? tipsRu : currentLang === 'ua' ? tipsUa : tipsEn;
+        return list[day % list.length];
+    }
+
+    // Ініціалізація при завантаженні
+    window.onload = () => {
+        setLanguage('ru'); // Сайт стартує російською, як ти просив
+        console.log("Titan System Loaded. Total Exercises: 55.");
+    };
 </script>
 </body>
 </html>
-
