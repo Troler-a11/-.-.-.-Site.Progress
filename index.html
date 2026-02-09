@@ -3,106 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TITAN AI | ЧЕРЕЗ СИЛУ 🪬</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
+    <title>TITAN AI | СИСТЕМА ПРЕВОСХОДСТВА</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon: #ff6b00;
-            --neon-glow: rgba(255, 107, 0, 0.4);
-            --bg: #050505;
-            --card: #0d0d0d;
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #ffffff;
-            --gold: #ffcc00;
+            --neon-glow: rgba(255, 107, 0, 0.5);
+            --bg: #020202;
+            --card-bg: #0a0a0a;
+            --border: rgba(255, 255, 255, 0.07);
+            --text-main: #ffffff;
+            --text-dim: #777;
+            --accent-gold: #ffcc00;
+            --transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
         
         body {
-            background: var(--bg);
-            color: var(--text);
+            background-color: var(--bg);
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Задний фон с твоим аватаром */
-        .master-bg {
+        /* Твой аватар на фоне (Master Layer) */
+        .master-background {
             position: fixed;
             top: 0; right: 0;
-            width: 50%; height: 100%;
-            background: url('https://i.ibb.co/Lzy6Yn2/your-avatar.jpg') no-repeat center center; /* Замени на прямую ссылку на фото */
+            width: 60%; height: 100%;
+            background: url('https://i.ibb.co/Lzy6Yn2/your-avatar.jpg') no-repeat center center;
             background-size: cover;
-            opacity: 0.15;
-            filter: grayscale(1) contrast(1.2);
+            opacity: 0.12;
+            filter: grayscale(1) contrast(1.3) brightness(0.8);
             z-index: -1;
-            mask-image: linear-gradient(to left, rgba(0,0,0,1), transparent);
+            mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, transparent 100%);
         }
 
-        header { padding: 80px 20px; text-align: left; max-width: 1200px; margin: 0 auto; }
-        
-        .logo-box { position: relative; display: inline-block; }
-        .logo-main {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 900;
-            letter-spacing: 12px;
-            text-shadow: 0 0 30px var(--neon-glow);
+        header {
+            padding: 100px 30px 50px;
+            max-width: 1300px;
+            margin: 0 auto;
         }
-        
-        .status-bar {
+
+        .brand-box { position: relative; }
+        .brand-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 18px;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #fff 30%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px var(--neon-glow));
+        }
+
+        .brand-status {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
+            gap: 12px;
+            margin-top: 20px;
+            font-size: 0.75rem;
             color: var(--neon);
             text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: 700;
         }
 
-        .status-dot { width: 8px; height: 8px; background: var(--neon); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .pulse-node { width: 10px; height: 10px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 10px var(--neon); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
 
-        /* Сетка упражнений */
+        /* Grid Exercises */
         .ex-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
         }
 
-        .ex-card {
-            background: var(--card);
+        .ex-item {
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 40px 20px;
-            border-radius: 24px;
+            padding: 60px 20px;
+            border-radius: 35px;
             text-align: center;
             cursor: pointer;
-            transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
         }
 
-        .ex-card:hover {
+        .ex-item:hover {
             border-color: var(--neon);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transform: translateY(-12px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 30px rgba(255, 107, 0, 0.1);
         }
 
-        .ex-card h3 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; letter-spacing: 1px; }
+        .ex-item h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-        /* Оверлей генератора */
+        /* Overlay */
         .overlay {
             position: fixed;
             inset: 0;
             background: var(--bg);
-            z-index: 9999;
+            z-index: 1000;
             display: none;
             flex-direction: column;
             overflow-y: auto;
+            padding-bottom: 100px;
         }
 
         .overlay-nav {
@@ -110,96 +126,113 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            background: rgba(5,5,5,0.95);
-            backdrop-filter: blur(15px);
+            background: rgba(2,2,2,0.9);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 10;
         }
 
-        .close-btn { background: none; border: none; color: var(--neon); font-size: 2.5rem; cursor: pointer; }
+        .btn-close { background: none; border: none; color: var(--neon); font-size: 2.5rem; cursor: pointer; transition: 0.3s; }
+        .btn-close:hover { transform: rotate(90deg); }
 
-        .form-content { max-width: 600px; margin: 60px auto; padding: 0 20px; }
+        .setup-area { max-width: 700px; margin: 60px auto; padding: 0 25px; width: 100%; }
         
-        .input-group { margin-bottom: 30px; }
-        .input-group label {
+        .input-wrap { margin-bottom: 50px; }
+        .input-wrap label {
             display: block;
-            font-size: 0.7rem;
-            color: #555;
+            font-size: 0.75rem;
+            color: var(--text-dim);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
         }
 
         input {
             width: 100%;
-            background: #111;
-            border: 1px solid #222;
-            padding: 25px;
-            border-radius: 20px;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            padding: 30px;
+            border-radius: 28px;
             color: #fff;
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-family: 'Orbitron', sans-serif;
             text-align: center;
+            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--neon); }
+        input:focus { border-color: var(--neon); background: #150b00; }
 
-        .btn-action {
+        .btn-build {
             width: 100%;
             background: var(--neon);
             color: #000;
             border: none;
-            padding: 25px;
-            border-radius: 20px;
+            padding: 32px;
+            border-radius: 28px;
             font-weight: 900;
             font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
             cursor: pointer;
-            letter-spacing: 4px;
-            box-shadow: 0 10px 40px var(--neon-glow);
+            letter-spacing: 6px;
+            box-shadow: 0 20px 50px var(--neon-glow);
+            transition: var(--transition);
         }
 
-        /* Стиль плана */
-        .day-box {
-            background: #0a0a0a;
+        .btn-build:hover { transform: translateY(-5px); filter: brightness(1.2); }
+
+        /* Training Day Layouts */
+        .day-block {
+            background: #080808;
             border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 45px;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .day-block.active { border-left: 12px solid var(--neon); }
+        .day-block.rest { border-left: 12px solid #222; opacity: 0.6; }
+
+        .day-header { margin-bottom: 35px; }
+        .day-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--text-main); }
+        .day-subtitle { color: var(--accent-gold); font-size: 0.85rem; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px; font-weight: 700; }
+
+        .exercise-step {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px;
             border-radius: 30px;
-            padding: 35px;
-            margin-top: 30px;
-            border-left: 8px solid var(--neon);
+            margin-bottom: 20px;
         }
-        .day-box.rest { border-left-color: #222; opacity: 0.5; }
 
-        .day-num { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--neon); }
-        .day-type { font-size: 0.7rem; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin: 5px 0 25px; display: block; }
+        .step-num { color: var(--neon); font-size: 0.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 12px; display: block; }
+        .step-name { font-size: 1.4rem; font-weight: 800; display: block; margin-bottom: 8px; }
+        .step-details { font-size: 0.95rem; color: var(--text-dim); line-height: 1.6; }
 
-        .task {
-            background: rgba(255,255,255,0.03);
+        .step-timer {
+            text-align: center;
             padding: 20px;
-            border-radius: 18px;
-            margin-bottom: 15px;
-        }
-        .task b { color: var(--neon); font-size: 0.7rem; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        .task p { font-size: 1.2rem; font-weight: 800; }
-        
-        .coach-tip {
-            margin-top: 20px;
-            padding: 15px;
-            border-top: 1px solid #1a1a1a;
+            color: #444;
             font-size: 0.8rem;
-            color: #666;
-            font-style: italic;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 60px 20px; }
+            .day-block { padding: 30px; border-radius: 30px; }
+            .day-title { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
-    <div class="master-bg"></div>
+    <div class="master-background"></div>
     <header>
-        <div class="logo-box">
-            <h1 class="logo-main">ЧЕРЕЗ СИЛУ</h1>
-            <div class="status-bar">
-                <div class="status-dot"></div>
-                TITAN AI GENERATOR v3.0
+        <div class="brand-box">
+            <h1 class="brand-title">ЧЕРЕЗ СИЛУ</h1>
+            <div class="brand-status">
+                <div class="pulse-node"></div>
+                TITAN AI ACTIVE ENGINE
             </div>
         </div>
     </header>
@@ -211,55 +244,57 @@
 
     <div class="overlay" id="planOverlay">
         <div class="overlay-nav">
-            <h2 id="exTitle" style="font-family:'Orbitron'; font-size: 1rem; letter-spacing: 2px;">ТРЕНИРОВКА</h2>
-            <button class="close-btn" onclick="closeOverlay()">✕</button>
+            <h2 id="exTitle" style="font-family:'Orbitron'; font-size: 1rem; letter-spacing: 3px;">TRAINING UNIT</h2>
+            <button class="btn-close" onclick="closeOverlay()">✕</button>
         </div>
         
-        <div class="form-content">
-            <div class="input-group">
-                <label>ТВОЙ ТЕКУЩИЙ МАКСИМУМ В ЭТОМ УПРАЖНЕНИИ</label>
-                <input type="number" id="userMax" placeholder="0">
+        <div class="setup-area">
+            <div class="input-wrap">
+                <label>ВВЕДИ СВОЙ МАКСИМАЛЬНЫЙ РЕЗУЛЬТАТ (ЕСЛИ 0 — ТАК И ПИШИ)</label>
+                <input type="number" id="userMax" placeholder="0" min="0">
             </div>
             
-            <button class="btn-action" onclick="generateMegaPlan()">СОЗДАТЬ ПЛАН НА 30 ДНЕЙ</button>
+            <button class="btn-build" onclick="generateUltimatePlan()">СОЗДАТЬ ПЛАН ТИТАНА</button>
             
-            <div id="planOutput"></div>
+            <div id="planOutput">
+                </div>
         </div>
     </div>
 
     <script>
-        // База данных: 55 упражнений на русском
+        // Полная база из 55 упражнений
         const exercises = [
             "Подтягивания", "Отжимания от пола", "Брусья", "Выход силой", "Передний вис",
             "Горизонт (Планш)", "Отжимания в стойке", "Подтягивания на одной", "L-Sit (Уголок)", "Флаг дракона",
-            "Алмазные отжимания", "Широкие подтягивания", "Лучник (подтягивания)", "Лучник (отжимания)", "Пистолетик",
+            "Алмазные отжимания", "Широкие подтягивания", "Лучник (подтягивания)", "Лучник (отжимания)", "Пистолетик (присед)",
             "Носки к перекладине", "Взрывные подтягивания", "Псевдо-планш отжимания", "Человеческий флаг", "Печатная машинка",
-            "Отжимания на пальцах", "Локтевой горизонт", "Подтягивания за голову", "Корейские брусья", "V-складка",
+            "Отжимания на пальцах", "Локтевой горизонт", "Подтягивания за голову", "Корейские брусья", "V-складка на пресс",
             "Выпады в прыжке", "Подтягивания обратным хватом", "Глубокие отжимания", "Вис на время", "Скандинавские сгибания",
             "Коммандо подтягивания", "Отжимания Супермена", "Медленные выходы", "Негативы на одной руке", "Плиометрические отжимания",
-            "Маятник на прес", "Прыжки на бокс", "Отжимания Ганнибала", "Подтягивания 360", "Хват на полотенце",
-            "Отжимания на запястьях", "Вис Ганнибала", "Нейтральный хват", "Отжимания от стены", "Велосипед",
-            "Болгарские приседания", "Австралийские тяги", "Глубокие брусья", "Планка (статика)", "Вис на одной руке",
-            "Выход на одну руку", "Железный крест", "Отжимания 360", "Казачьи приседания", "Горизонт ноги врозь"
+            "Маятник на пресс", "Прыжки на бокс", "Отжимания Ганнибала", "Подтягивания 360", "Хват на полотенце",
+            "Отжимания на запястьях", "Вис Ганнибала", "Нейтральный хват", "Отжимания от стены", "Велосипед (пресс)",
+            "Болгарские сплит-приседы", "Австралийские тяги", "Глубокие брусья", "Планка (статика)", "Вис на одной руке",
+            "Выход на одну руку", "Железный крест (пол)", "Отжимания 360", "Казачьи приседания", "Горизонт ноги врозь"
         ];
 
-        let selectedEx = "";
+        let activeExercise = "";
 
-        // Рендер сетки
+        // Инициализация сетки
         const grid = document.getElementById('mainGrid');
         exercises.forEach(name => {
             const card = document.createElement('div');
-            card.className = 'ex-card';
+            card.className = 'ex-item';
             card.innerHTML = `<h3>${name}</h3>`;
             card.onclick = () => openOverlay(name);
             grid.appendChild(card);
         });
 
         function openOverlay(name) {
-            selectedEx = name;
+            activeExercise = name;
             document.getElementById('planOverlay').style.display = 'flex';
             document.getElementById('exTitle').innerText = name.toUpperCase();
             document.getElementById('planOutput').innerHTML = '';
+            document.getElementById('userMax').value = '';
             document.body.style.overflow = 'hidden';
         }
 
@@ -267,63 +302,128 @@
             document.getElementById('planOverlay').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-
-        // ГЛАВНЫЙ АЛГОРИТМ ПРОГРЕССИИ
-        function generateMegaPlan() {
+// Конец Части 2
+        function generateUltimatePlan() {
             const max = parseInt(document.getElementById('userMax').value);
             const output = document.getElementById('planOutput');
             output.innerHTML = '';
 
-            if (isNaN(max) || max < 0) return;
+            if (isNaN(max) || max < 0) {
+                document.getElementById('userMax').style.borderColor = 'var(--neon)';
+                return;
+            }
 
             for (let d = 1; d <= 30; d++) {
-                const dayCard = document.createElement('div');
-                dayCard.className = 'day-box';
+                const dayBlock = document.createElement('div');
+                dayBlock.className = 'day-block';
                 
-                // Логика отдыха
-                if (d % 4 === 0) {
-                    dayCard.classList.add('rest');
-                    dayCard.innerHTML = `
-                        <span class="day-num">ДЕНЬ ${d}</span>
-                        <span class="day-type">ВОССТАНОВЛЕНИЕ ЦНС</span>
-                        <p>Полный покой. Сегодня мышцы растут и адаптируются к нагрузке.</p>
+                // РЕЖИМ ОТДЫХА (каждый 4-й день + стратегические паузы)
+                if (d % 4 === 0 || d === 15 || d === 29) {
+                    dayBlock.classList.add('rest');
+                    dayBlock.innerHTML = `
+                        <div class="day-header">
+                            <h3 class="day-title">ДЕНЬ ${d}</h3>
+                            <span class="day-subtitle">Глубокое восстановление</span>
+                        </div>
+                        <div class="exercise-step">
+                            <span class="step-details">
+                                Сегодня тренировки запрещены. Твоя задача: сон 9 часов, контрастный душ и растяжка. 
+                                Мышцы растут не на турнике, а в кровати. Готовь ЦНС к следующему рывку.
+                            </span>
+                        </div>
                     `;
                 } else {
-                    const prog = 1 + (d * 0.05); // +5% сложности в день
-                    let content = "";
-                    let typeName = "";
-
-                    // УМНЫЙ ТРЕНЕР: РАЗНЫЕ МЕТОДЫ
-                    if (max === 0) {
-                        typeName = "НУЛЕВОЙ РУБЕЖ (ПОДГОТОВКА)";
-                        content = `
-                            <div class="task"><b>ФАЗА 1</b><p>Негативные спуски: 5 по 3 (спуск 5 сек)</p></div>
-                            <div class="task"><b>ФАЗА 2</b><p>Удержание в пиковой точке: 3 по 15 сек</p></div>
-                        `;
-                    } else if (d % 3 === 1) {
-                        typeName = "ОБЪЕМНАЯ ПИРАМИДА";
-                        let peak = Math.ceil(max * 0.5 * prog);
-                        content = `<div class="task"><b>МЕТОД</b><p>Лестница: 1-2-...-${peak}-...-2-1</p></div>`;
-                    } else if (d % 3 === 2) {
-                        typeName = "ВЗРЫВНАЯ МОЩЬ + ПАМП";
-                        let reps = Math.ceil(max * 0.7 * prog);
-                        content = `<div class="task"><b>ИНТЕНСИВ</b><p>4 подхода по ${reps} повторений</p></div>`;
-                    } else {
-                        typeName = "ПРОТОКОЛ EMOM (КАЖДУЮ МИНУТУ)";
-                        let emomReps = Math.ceil(max * 0.3 * prog);
-                        content = `<div class="task"><b>ВЫНОСЛИВОСТЬ</b><p>10 минут: делай ${emomReps} раз в начале каждой минуты</p></div>`;
-                    }
-
-                    dayCard.innerHTML = `
-                        <span class="day-num">ДЕНЬ ${d}</span>
-                        <span class="day-type">${typeName}</span>
-                        ${content}
-                        <div class="coach-tip">Совет: Сжимай перекладину до хруста костей. Это секрет силы.</div>
+                    dayBlock.classList.add('active');
+                    const config = getDailyConfig(d, max);
+                    
+                    dayBlock.innerHTML = `
+                        <div class="day-header">
+                            <h3 class="day-title">ДЕНЬ ${d}</h3>
+                            <span class="day-subtitle">${config.phaseName}</span>
+                        </div>
                     `;
+
+                    config.steps.forEach((step, idx) => {
+                        const s = document.createElement('div');
+                        s.className = 'exercise-step';
+                        s.innerHTML = `
+                            <span class="step-num">ЭТАП ${idx + 1}</span>
+                            <span class="step-name">${step.name}</span>
+                            <span class="step-details">${step.desc}</span>
+                        `;
+                        dayBlock.appendChild(s);
+                        
+                        if (idx < config.steps.length - 1) {
+                            const timer = document.createElement('div');
+                            timer.className = 'step-timer';
+                            timer.innerText = `⏳ ОТДЫХ: ${step.rest} СЕКУНД`;
+                            dayBlock.appendChild(timer);
+                        }
+                    });
+
+                    const tip = document.createElement('div');
+                    tip.className = 'coach-tip';
+                    tip.innerHTML = `<b>УКАЗАНИЕ МАСТЕРА:</b> ${getCoachTip(d)}`;
+                    dayBlock.appendChild(tip);
                 }
-                output.appendChild(dayCard);
+                output.appendChild(dayBlock);
             }
             output.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function getDailyConfig(day, max) {
+            const prog = 1 + (day * 0.04); // Прогрессия сложности 4% в день
+            let result = { phaseName: "", steps: [] };
+
+            // ЛОГИКА ДЛЯ АБСОЛЮТНОГО НУЛЯ (0 повторений)
+            if (max === 0) {
+                result.phaseName = "ФУНДАМЕНТ СИЛЫ (УРОВЕНЬ 0)";
+                result.steps = [
+                    { name: "Негативная фаза", desc: "Запрыгни вверх, подбородок над перекладиной. Максимально медленно опускайся вниз (минимум 6 секунд). Сделай 5 подходов по 3 раза.", rest: 120 },
+                    { name: "Активный вис", desc: "Просто виси на перекладине, максимально сильно сжимая её и напрягая лопатки. 3 подхода до полного отказа хвата.", rest: 60 },
+                    { name: "Австралийские тяги", desc: "Найди низкую перекладину (на уровне пояса). Ноги на земле. Подтягивай грудь к планке. 4 подхода по 10 раз.", rest: 90 }
+                ];
+            } 
+            // ЛОГИКА ДЛЯ ПРОФИ (МАКС > 0)
+            else {
+                const currentMax = Math.ceil(max * prog);
+                const mode = day % 3;
+
+                if (mode === 1) {
+                    result.phaseName = "СИЛОВАЯ ПИРАМИДА (ОБЪЕМ)";
+                    let peak = Math.ceil(currentMax * 0.6);
+                    result.steps = [
+                        { name: "Восходящая лестница", desc: `Сделай серию подходов: 1, 2, 3... до ${peak}. Между подходами отдых всего 20 секунд.`, rest: 180 },
+                        { name: "Добивка", desc: `После отдыха сделай один подход на максимум (цель: ${currentMax} раз).`, rest: 0 }
+                    ];
+                } else if (mode === 2) {
+                    result.phaseName = "ВЗРЫВНОЙ ПРОТОКОЛ";
+                    let reps = Math.ceil(currentMax * 0.7);
+                    result.steps = [
+                        { name: "Взрывные сеты", desc: `4 подхода по ${reps} повторений. Тяни максимально быстро, опускайся медленно.`, rest: 120 },
+                        { name: "Изометрия", desc: "Замри в середине амплитуды (угол 90 градусов) и держи сколько сможешь. 3 подхода.", rest: 60 }
+                    ];
+                } else {
+                    result.phaseName = "EMOM (ВЫНОСЛИВОСТЬ)";
+                    let emomReps = Math.ceil(currentMax * 0.4);
+                    result.steps = [
+                        { name: "Цикл 12 минут", desc: `В начале каждой минуты делай по ${emomReps} повторений. Остаток минуты — отдых. Всего 12 циклов.`, rest: 0 }
+                    ];
+                }
+            }
+            return result;
+        }
+
+        function getCoachTip(day) {
+            const tips = [
+                "Представь, что перекладина — это шея врага. Сожми её!",
+                "Если болят мозоли — значит ты работаешь правильно. Не ной.",
+                "Дыхание: выдох всегда на самом тяжелом моменте движения.",
+                "Твой главный соперник — это ты вчерашний. Победи его.",
+                "Пей воду между сетами маленькими глотками. Не заливайся.",
+                "Локти веди к ребрам, а не в стороны. Так включается спина."
+            ];
+            return tips[day % tips.length];
         }
     </script>
 </body>
