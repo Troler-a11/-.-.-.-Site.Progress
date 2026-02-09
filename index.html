@@ -3,236 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TITAN AI | СИСТЕМА ПРЕВОСХОДСТВА</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>TITAN AI | NEURAL STRENGTH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon: #ff6b00;
-            --neon-glow: rgba(255, 107, 0, 0.5);
             --bg: #020202;
-            --card-bg: #0a0a0a;
-            --border: rgba(255, 255, 255, 0.07);
-            --text-main: #ffffff;
-            --text-dim: #777;
-            --accent-gold: #ffcc00;
-            --transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            --card: rgba(15, 15, 15, 0.9);
+            --border: rgba(255, 107, 0, 0.2);
+            --text: #ffffff;
+            --dim: #888;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-        
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* Твой аватар на фоне (Master Layer) */
-        .master-background {
+        /* Фоновый слой с твоим аватаром (Master Image) */
+        .ai-background {
             position: fixed;
-            top: 0; right: 0;
-            width: 60%; height: 100%;
+            top: 0; right: 0; width: 55%; height: 100%;
             background: url('https://i.ibb.co/Lzy6Yn2/your-avatar.jpg') no-repeat center center;
             background-size: cover;
-            opacity: 0.12;
-            filter: grayscale(1) contrast(1.3) brightness(0.8);
+            opacity: 0.15;
+            filter: grayscale(1) contrast(1.5);
             z-index: -1;
-            mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, transparent 100%);
+            mask-image: linear-gradient(to left, black 30%, transparent 100%);
         }
 
-        header {
-            padding: 100px 30px 50px;
-            max-width: 1300px;
-            margin: 0 auto;
+        header { padding: 120px 40px 60px; max-width: 1400px; margin: 0 auto; }
+        .logo { 
+            font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; 
+            letter-spacing: 20px; text-transform: uppercase;
+            background: linear-gradient(180deg, #fff, #555); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255,107,0,0.4));
         }
 
-        .brand-box { position: relative; }
-        .brand-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 10vw, 5rem);
-            font-weight: 900;
-            letter-spacing: 18px;
-            text-transform: uppercase;
-            background: linear-gradient(180deg, #fff 30%, #444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px var(--neon-glow));
-        }
-
-        .brand-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 20px;
-            font-size: 0.75rem;
-            color: var(--neon);
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-weight: 700;
-        }
-
-        .pulse-node { width: 10px; height: 10px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 10px var(--neon); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
-
-        .container { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
-
-        /* Grid Exercises */
-        .ex-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 25px;
-        }
-
-        .ex-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 60px 20px;
-            border-radius: 35px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ex-item:hover {
-            border-color: var(--neon);
-            transform: translateY(-12px);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 30px rgba(255, 107, 0, 0.1);
-        }
-
-        .ex-item h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
-            padding-bottom: 100px;
-        }
-
-        .overlay-nav {
-            padding: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(2,2,2,0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 10;
-        }
-
-        .btn-close { background: none; border: none; color: var(--neon); font-size: 2.5rem; cursor: pointer; transition: 0.3s; }
-        .btn-close:hover { transform: rotate(90deg); }
-
-        .setup-area { max-width: 700px; margin: 60px auto; padding: 0 25px; width: 100%; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px; }
         
-        .input-wrap { margin-bottom: 50px; }
-        .input-wrap label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
+        /* Сетка выбора */
+        .ex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .ex-card {
+            background: var(--card); border: 1px solid var(--border); padding: 50px 30px;
+            border-radius: 40px; text-align: center; cursor: pointer; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative; overflow: hidden;
         }
+        .ex-card:hover { border-color: var(--neon); transform: translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+        .ex-card h3 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 3px; }
 
+        /* Окно обработки AI */
+        .ai-overlay {
+            position: fixed; inset: 0; background: var(--bg); z-index: 1000;
+            display: none; flex-direction: column; overflow-y: auto;
+        }
+        .ai-nav { 
+            padding: 30px 50px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(2,2,2,0.95); backdrop-filter: blur(20px);
+        }
+        .close-btn { background: none; border: none; color: var(--neon); font-size: 3rem; cursor: pointer; }
+
+        .ai-form { max-width: 700px; margin: 80px auto; width: 100%; padding: 0 30px; }
         input {
-            width: 100%;
-            background: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            padding: 30px;
-            border-radius: 28px;
-            color: #fff;
-            font-size: 2.5rem;
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            transition: 0.3s;
+            width: 100%; background: #0a0a0a; border: 1px solid #222; padding: 35px;
+            border-radius: 30px; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 3rem;
+            text-align: center; margin-bottom: 40px; transition: 0.3s;
+        }
+        input:focus { border-color: var(--neon); box-shadow: 0 0 30px rgba(255,107,0,0.1); }
+
+        .btn-neural {
+            width: 100%; background: var(--neon); color: #000; border: none; padding: 35px;
+            border-radius: 30px; font-family: 'Orbitron', sans-serif; font-weight: 900;
+            font-size: 1.4rem; letter-spacing: 8px; cursor: pointer; box-shadow: 0 20px 50px rgba(255,107,0,0.3);
         }
 
-        input:focus { border-color: var(--neon); background: #150b00; }
-
-        .btn-build {
-            width: 100%;
-            background: var(--neon);
-            color: #000;
-            border: none;
-            padding: 32px;
-            border-radius: 28px;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            cursor: pointer;
-            letter-spacing: 6px;
-            box-shadow: 0 20px 50px var(--neon-glow);
-            transition: var(--transition);
+        /* Блоки тренировок */
+        .day-node {
+            background: #080808; border: 1px solid var(--border); border-radius: 45px;
+            padding: 50px; margin-top: 50px; border-left: 15px solid var(--neon);
         }
+        .day-node.rest { border-left-color: #222; opacity: 0.4; }
+        .node-header { margin-bottom: 40px; }
+        .node-title { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; }
+        .node-type { color: var(--neon); font-size: 0.8rem; letter-spacing: 6px; text-transform: uppercase; margin-top: 10px; display: block; }
 
-        .btn-build:hover { transform: translateY(-5px); filter: brightness(1.2); }
-
-        /* Training Day Layouts */
-        .day-block {
-            background: #080808;
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 45px;
-            margin-top: 40px;
-            position: relative;
-        }
-
-        .day-block.active { border-left: 12px solid var(--neon); }
-        .day-block.rest { border-left: 12px solid #222; opacity: 0.6; }
-
-        .day-header { margin-bottom: 35px; }
-        .day-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--text-main); }
-        .day-subtitle { color: var(--accent-gold); font-size: 0.85rem; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px; font-weight: 700; }
-
-        .exercise-step {
-            background: rgba(255,255,255,0.02);
+        .exercise-detail {
+            background: rgba(255,255,255,0.03); padding: 35px; border-radius: 35px; margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.05);
-            padding: 30px;
-            border-radius: 30px;
-            margin-bottom: 20px;
         }
+        .detail-label { color: var(--neon); font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
+        .detail-main { font-size: 1.6rem; font-weight: 800; margin: 10px 0; display: block; }
+        .detail-desc { color: var(--dim); font-size: 1rem; line-height: 1.7; }
 
-        .step-num { color: var(--neon); font-size: 0.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 12px; display: block; }
-        .step-name { font-size: 1.4rem; font-weight: 800; display: block; margin-bottom: 8px; }
-        .step-details { font-size: 0.95rem; color: var(--text-dim); line-height: 1.6; }
-
-        .step-timer {
-            text-align: center;
-            padding: 20px;
-            color: #444;
-            font-size: 0.8rem;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-        }
-
+        .rest-info { text-align: center; padding: 30px; color: #444; letter-spacing: 10px; font-size: 0.8rem; }
+        
         @media (max-width: 768px) {
-            header { padding: 60px 20px; }
-            .day-block { padding: 30px; border-radius: 30px; }
-            .day-title { font-size: 1.8rem; }
+            .ai-background { width: 100%; opacity: 0.1; }
+            .node-title { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
-    <div class="master-background"></div>
-    <header>
-        <div class="brand-box">
-            <h1 class="brand-title">ЧЕРЕЗ СИЛУ</h1>
-            <div class="brand-status">
-                <div class="pulse-node"></div>
-                TITAN AI ACTIVE ENGINE
+    <div class="ai-background"></div>
+        <header>
+        <div class="brand-zone">
+            <h1 class="logo">ЧЕРЕЗ СИЛУ</h1>
+            <div style="color: var(--neon); font-size: 0.7rem; letter-spacing: 5px; margin-top: 15px;">
+                NEURAL ARCHITECT v4.2 // ONLINE
             </div>
         </div>
     </header>
@@ -242,188 +117,216 @@
             </div>
     </div>
 
-    <div class="overlay" id="planOverlay">
-        <div class="overlay-nav">
-            <h2 id="exTitle" style="font-family:'Orbitron'; font-size: 1rem; letter-spacing: 3px;">TRAINING UNIT</h2>
-            <button class="btn-close" onclick="closeOverlay()">✕</button>
+    <div class="ai-overlay" id="aiOverlay">
+        <div class="ai-nav">
+            <h2 id="exNameDisplay" style="font-family:'Orbitron'; letter-spacing: 4px;">NEURAL CORE</h2>
+            <button class="close-btn" onclick="closeAI()">✕</button>
         </div>
         
-        <div class="setup-area">
-            <div class="input-wrap">
-                <label>ВВЕДИ СВОЙ МАКСИМАЛЬНЫЙ РЕЗУЛЬТАТ (ЕСЛИ 0 — ТАК И ПИШИ)</label>
-                <input type="number" id="userMax" placeholder="0" min="0">
+        <div class="ai-form">
+            <div style="margin-bottom: 40px;">
+                <label style="color: var(--dim); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;">
+                    Введите ваш текущий максимум (0 — если не умеете)
+                </label>
+                <input type="number" id="userMax" placeholder="0">
             </div>
             
-            <button class="btn-build" onclick="generateUltimatePlan()">СОЗДАТЬ ПЛАН ТИТАНА</button>
+            <button class="btn-neural" onclick="runTitanAI()">ЗАПУСТИТЬ АНАЛИЗ AI</button>
             
-            <div id="planOutput">
+            <div id="neuralOutput" style="margin-top: 60px;">
                 </div>
         </div>
     </div>
 
     <script>
-        // Полная база из 55 упражнений
-        const exercises = [
-            "Подтягивания", "Отжимания от пола", "Брусья", "Выход силой", "Передний вис",
-            "Горизонт (Планш)", "Отжимания в стойке", "Подтягивания на одной", "L-Sit (Уголок)", "Флаг дракона",
-            "Алмазные отжимания", "Широкие подтягивания", "Лучник (подтягивания)", "Лучник (отжимания)", "Пистолетик (присед)",
-            "Носки к перекладине", "Взрывные подтягивания", "Псевдо-планш отжимания", "Человеческий флаг", "Печатная машинка",
-            "Отжимания на пальцах", "Локтевой горизонт", "Подтягивания за голову", "Корейские брусья", "V-складка на пресс",
-            "Выпады в прыжке", "Подтягивания обратным хватом", "Глубокие отжимания", "Вис на время", "Скандинавские сгибания",
-            "Коммандо подтягивания", "Отжимания Супермена", "Медленные выходы", "Негативы на одной руке", "Плиометрические отжимания",
-            "Маятник на пресс", "Прыжки на бокс", "Отжимания Ганнибала", "Подтягивания 360", "Хват на полотенце",
-            "Отжимания на запястьях", "Вис Ганнибала", "Нейтральный хват", "Отжимания от стены", "Велосипед (пресс)",
-            "Болгарские сплит-приседы", "Австралийские тяги", "Глубокие брусья", "Планка (статика)", "Вис на одной руке",
-            "Выход на одну руку", "Железный крест (пол)", "Отжимания 360", "Казачьи приседания", "Горизонт ноги врозь"
+        // БАЗА ДАННЫХ С ТИПАМИ НАГРУЗКИ ДЛЯ AI
+        const titanDB = [
+            { name: "Подтягивания", type: "pull" },
+            { name: "Отжимания от пола", type: "push_hor" },
+            { name: "Брусья", type: "push_vert" },
+            { name: "Выход силой", type: "power" },
+            { name: "Передний вис", type: "stat_pull" },
+            { name: "Горизонт (Планш)", type: "stat_push" },
+            { name: "Отжимания в стойке", type: "push_vert" },
+            { name: "Подтягивания на одной", type: "pull_elite" },
+            { name: "L-Sit (Уголок)", type: "stat_core" },
+            { name: "Флаг дракона", type: "core_hard" },
+            { name: "Алмазные отжимания", type: "push_hor" },
+            { name: "Широкие подтягивания", type: "pull" },
+            { name: "Лучник (подтягивания)", type: "pull_iso" },
+            { name: "Лучник (отжимания)", type: "push_iso" },
+            { name: "Пистолетик (присед)", type: "legs_iso" },
+            { name: "Носки к перекладине", type: "core" },
+            { name: "Взрывные подтягивания", type: "power" },
+            { name: "Псевдо-планш отжимания", type: "stat_push" },
+            { name: "Человеческий флаг", type: "stat_mix" },
+            { name: "Печатная машинка", type: "pull_iso" },
+            { name: "Отжимания на пальцах", type: "push_hor" },
+            { name: "Локтевой горизонт", type: "stat_balance" },
+            { name: "Подтягивания за голову", type: "pull" },
+            { name: "Корейские брусья", type: "push_vert" },
+            { name: "V-складка на пресс", type: "core" },
+            { name: "Выпады в прыжке", type: "legs_power" },
+            { name: "Подтягивания обратным хватом", type: "pull" },
+            { name: "Глубокие отжимания", type: "push_hor" },
+            { name: "Вис на время", type: "stat_grip" },
+            { name: "Скандинавские сгибания", type: "legs_iso" },
+            { name: "Коммандо подтягивания", type: "pull" },
+            { name: "Отжимания Супермена", type: "power" },
+            { name: "Медленные выходы", type: "power_iso" },
+            { name: "Негативы на одной руке", type: "pull_elite" },
+            { name: "Плиометрические отжимания", type: "power" },
+            { name: "Маятник на пресс", type: "core" },
+            { name: "Прыжки на бокс", type: "legs_power" },
+            { name: "Отжимания Ганнибала", type: "push_elite" },
+            { name: "Подтягивания 360", type: "power" },
+            { name: "Хват на полотенце", type: "stat_grip" },
+            { name: "Отжимания на запястьях", type: "push_hor" },
+            { name: "Вис Ганнибала", type: "stat_pull" },
+            { name: "Нейтральный хват", type: "pull" },
+            { name: "Отжимания от стены", type: "push_vert" },
+            { name: "Велосипед (пресс)", type: "core" },
+            { name: "Болгарские приседания", type: "legs_iso" },
+            { name: "Австралийские тяги", type: "pull" },
+            { name: "Глубокие брусья", type: "push_vert" },
+            { name: "Планка (статика)", type: "stat_core" },
+            { name: "Вис на одной руке", type: "stat_grip" },
+            { name: "Выход на одну руку", type: "power" },
+            { name: "Железный крест (пол)", type: "stat_push" },
+            { name: "Отжимания 360", type: "power" },
+            { name: "Казачьи приседания", type: "legs_iso" },
+            { name: "Горизонт ноги врозь", type: "stat_push" }
         ];
 
-        let activeExercise = "";
+        let currentActiveEx = null;
 
-        // Инициализация сетки
+        // Генерация карточек
         const grid = document.getElementById('mainGrid');
-        exercises.forEach(name => {
+        titanDB.forEach(ex => {
             const card = document.createElement('div');
-            card.className = 'ex-item';
-            card.innerHTML = `<h3>${name}</h3>`;
-            card.onclick = () => openOverlay(name);
+            card.className = 'ex-card';
+            card.innerHTML = `<h3>${ex.name}</h3>`;
+            card.onclick = () => openAI(ex);
             grid.appendChild(card);
         });
 
-        function openOverlay(name) {
-            activeExercise = name;
-            document.getElementById('planOverlay').style.display = 'flex';
-            document.getElementById('exTitle').innerText = name.toUpperCase();
-            document.getElementById('planOutput').innerHTML = '';
-            document.getElementById('userMax').value = '';
+        function openAI(ex) {
+            currentActiveEx = ex;
+            document.getElementById('aiOverlay').style.display = 'flex';
+            document.getElementById('exNameDisplay').innerText = ex.name.toUpperCase();
+            document.getElementById('neuralOutput').innerHTML = '';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeOverlay() {
-            document.getElementById('planOverlay').style.display = 'none';
+        function closeAI() {
+            document.getElementById('aiOverlay').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 // Конец Части 2
-        function generateUltimatePlan() {
+        function runTitanAI() {
             const max = parseInt(document.getElementById('userMax').value);
-            const output = document.getElementById('planOutput');
-            output.innerHTML = '';
-
+            const output = document.getElementById('neuralOutput');
+            const ex = currentActiveEx;
+            
             if (isNaN(max) || max < 0) {
                 document.getElementById('userMax').style.borderColor = 'var(--neon)';
                 return;
             }
 
+            output.innerHTML = '<h2 style="font-family:Orbitron; color:var(--neon); margin-bottom:40px; text-align:center;">АНАЛИЗ ДАННЫХ ЗАВЕРШЕН</h2>';
+
             for (let d = 1; d <= 30; d++) {
-                const dayBlock = document.createElement('div');
-                dayBlock.className = 'day-block';
+                const dayNode = document.createElement('div');
+                dayNode.className = 'day-node';
                 
-                // РЕЖИМ ОТДЫХА (каждый 4-й день + стратегические паузы)
-                if (d % 4 === 0 || d === 15 || d === 29) {
-                    dayBlock.classList.add('rest');
-                    dayBlock.innerHTML = `
-                        <div class="day-header">
-                            <h3 class="day-title">ДЕНЬ ${d}</h3>
-                            <span class="day-subtitle">Глубокое восстановление</span>
+                if (d % 4 === 0) {
+                    dayNode.classList.add('rest');
+                    dayNode.innerHTML = `
+                        <div class="node-header">
+                            <span class="node-title">ДЕНЬ ${d}</span>
+                            <span class="node-type">Системная перезагрузка</span>
                         </div>
-                        <div class="exercise-step">
-                            <span class="step-details">
-                                Сегодня тренировки запрещены. Твоя задача: сон 9 часов, контрастный душ и растяжка. 
-                                Мышцы растут не на турнике, а в кровати. Готовь ЦНС к следующему рывку.
-                            </span>
-                        </div>
+                        <p style="color:var(--dim);">ИИ заблокировал тренировку для восстановления волокон. Спи не менее 8 часов. Пей 3л воды.</p>
                     `;
                 } else {
-                    dayBlock.classList.add('active');
-                    const config = getDailyConfig(d, max);
-                    
-                    dayBlock.innerHTML = `
-                        <div class="day-header">
-                            <h3 class="day-title">ДЕНЬ ${d}</h3>
-                            <span class="day-subtitle">${config.phaseName}</span>
+                    const plan = calculateNeuralWorkout(ex.type, max, d);
+                    dayNode.innerHTML = `
+                        <div class="node-header">
+                            <span class="node-title">ДЕНЬ ${d}</span>
+                            <span class="node-type">${plan.method}</span>
                         </div>
                     `;
 
-                    config.steps.forEach((step, idx) => {
-                        const s = document.createElement('div');
-                        s.className = 'exercise-step';
-                        s.innerHTML = `
-                            <span class="step-num">ЭТАП ${idx + 1}</span>
-                            <span class="step-name">${step.name}</span>
-                            <span class="step-details">${step.desc}</span>
+                    plan.drills.forEach((drill, i) => {
+                        const div = document.createElement('div');
+                        div.className = 'exercise-detail';
+                        div.innerHTML = `
+                            <span class="detail-label">ЭТАП ${i + 1}</span>
+                            <span class="detail-main">${drill.name}</span>
+                            <span class="detail-desc">${drill.task}</span>
                         `;
-                        dayBlock.appendChild(s);
-                        
-                        if (idx < config.steps.length - 1) {
-                            const timer = document.createElement('div');
-                            timer.className = 'step-timer';
-                            timer.innerText = `⏳ ОТДЫХ: ${step.rest} СЕКУНД`;
-                            dayBlock.appendChild(timer);
+                        dayNode.appendChild(div);
+                        if (i < plan.drills.length - 1) {
+                            const r = document.createElement('div');
+                            r.className = 'rest-info';
+                            r.innerText = `— ОТДЫХ ${drill.rest} СЕК —`;
+                            dayNode.appendChild(r);
                         }
                     });
-
-                    const tip = document.createElement('div');
-                    tip.className = 'coach-tip';
-                    tip.innerHTML = `<b>УКАЗАНИЕ МАСТЕРА:</b> ${getCoachTip(d)}`;
-                    dayBlock.appendChild(tip);
                 }
-                output.appendChild(dayBlock);
+                output.appendChild(dayNode);
             }
             output.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function getDailyConfig(day, max) {
-            const prog = 1 + (day * 0.04); // Прогрессия сложности 4% в день
-            let result = { phaseName: "", steps: [] };
+        function calculateNeuralWorkout(type, max, day) {
+            const intensity = 1 + (day * 0.035); // Коэффициент прогрессии
+            const isZero = max === 0;
+            let result = { method: "", drills: [] };
 
-            // ЛОГИКА ДЛЯ АБСОЛЮТНОГО НУЛЯ (0 повторений)
-            if (max === 0) {
-                result.phaseName = "ФУНДАМЕНТ СИЛЫ (УРОВЕНЬ 0)";
-                result.steps = [
-                    { name: "Негативная фаза", desc: "Запрыгни вверх, подбородок над перекладиной. Максимально медленно опускайся вниз (минимум 6 секунд). Сделай 5 подходов по 3 раза.", rest: 120 },
-                    { name: "Активный вис", desc: "Просто виси на перекладине, максимально сильно сжимая её и напрягая лопатки. 3 подхода до полного отказа хвата.", rest: 60 },
-                    { name: "Австралийские тяги", desc: "Найди низкую перекладину (на уровне пояса). Ноги на земле. Подтягивай грудь к планке. 4 подхода по 10 раз.", rest: 90 }
-                ];
-            } 
-            // ЛОГИКА ДЛЯ ПРОФИ (МАКС > 0)
-            else {
-                const currentMax = Math.ceil(max * prog);
-                const mode = day % 3;
-
-                if (mode === 1) {
-                    result.phaseName = "СИЛОВАЯ ПИРАМИДА (ОБЪЕМ)";
-                    let peak = Math.ceil(currentMax * 0.6);
-                    result.steps = [
-                        { name: "Восходящая лестница", desc: `Сделай серию подходов: 1, 2, 3... до ${peak}. Между подходами отдых всего 20 секунд.`, rest: 180 },
-                        { name: "Добивка", desc: `После отдыха сделай один подход на максимум (цель: ${currentMax} раз).`, rest: 0 }
-                    ];
-                } else if (mode === 2) {
-                    result.phaseName = "ВЗРЫВНОЙ ПРОТОКОЛ";
-                    let reps = Math.ceil(currentMax * 0.7);
-                    result.steps = [
-                        { name: "Взрывные сеты", desc: `4 подхода по ${reps} повторений. Тяни максимально быстро, опускайся медленно.`, rest: 120 },
-                        { name: "Изометрия", desc: "Замри в середине амплитуды (угол 90 градусов) и держи сколько сможешь. 3 подхода.", rest: 60 }
+            // ЛОГИКА ДЛЯ СТАТИЧЕСКИХ УПРАЖНЕНИЙ (Горизонт, Вис, Уголок)
+            if (type.startsWith("stat")) {
+                result.method = "ИЗОМЕТРИЧЕСКАЯ ПРОГРЕССИЯ";
+                if (isZero) {
+                    result.drills = [
+                        { name: "Облегченная форма", task: "Удержание в самой легкой вариации (закрытый горизонт/вис с согнутыми ногами): 5 подходов по 10 сек.", rest: 90 },
+                        { name: "Негативная статика", task: "Медленный вход в позицию из более легкого положения: 4 подхода.", rest: 60 }
                     ];
                 } else {
-                    result.phaseName = "EMOM (ВЫНОСЛИВОСТЬ)";
-                    let emomReps = Math.ceil(currentMax * 0.4);
-                    result.steps = [
-                        { name: "Цикл 12 минут", desc: `В начале каждой минуты делай по ${emomReps} повторений. Остаток минуты — отдых. Всего 12 циклов.`, rest: 0 }
+                    let sec = Math.ceil(max * intensity);
+                    result.drills = [
+                        { name: "Кластерные удержания", task: `Разбей ${sec * 2} сек на подходы по ${Math.ceil(sec/2)} сек. Отдых между кластерами 15 сек.`, rest: 120 },
+                        { name: "Максимальная фиксация", task: `1 подход на 100% времени (${sec} сек). Техника идеальна.`, rest: 0 }
+                    ];
+                }
+            } 
+            // ЛОГИКА ДЛЯ МОЩНОСТИ (Выходы силой, прыжки, взрывные)
+            else if (type === "power") {
+                result.method = "ВЗРЫВНАЯ НЕЙРО-АКТИВАЦИЯ";
+                let reps = isZero ? 5 : Math.ceil(max * 0.4 * intensity);
+                result.drills = [
+                    { name: "Взрывной этап", task: isZero ? "Выпрыгивания вверх с имитацией движения: 5 по 8." : `Делай ${reps} повторений максимально быстро ("взрывай"). 5 подходов.`, rest: 150 },
+                    { name: "Силовой дожим", task: "Медленное выполнение базы (подтягивания/отжимания): 3 по 10.", rest: 90 }
+                ];
+            }
+            // ЛОГИКА ДЛЯ ДИНАМИКИ (Тяги, жимы)
+            else {
+                result.method = "МЕТОД ОБЪЕМНОГО ПРОГРЕССА";
+                if (isZero) {
+                    result.drills = [
+                        { name: "Фаза Адаптации", task: "Негативные повторения (только спуск 8 секунд): 5 подходов по 4 раза.", rest: 120 },
+                        { name: "Статическое удержание", task: "В пиковой точке (подбородок над турником/грудь у пола): 3 по 15 сек.", rest: 60 }
+                    ];
+                } else {
+                    let sets = 5;
+                    let reps = Math.ceil((max / 2) * intensity);
+                    result.drills = [
+                        { name: "Рабочие сеты", task: `Выполни ${sets} подходов по ${reps} повторений. Темп: 1 сек вверх, 2 сек вниз.`, rest: 90 },
+                        { name: "Финальный отказ", task: "Сделай один подход на максимум, пока руки не разогнутся сами.", rest: 0 }
                     ];
                 }
             }
             return result;
-        }
-
-        function getCoachTip(day) {
-            const tips = [
-                "Представь, что перекладина — это шея врага. Сожми её!",
-                "Если болят мозоли — значит ты работаешь правильно. Не ной.",
-                "Дыхание: выдох всегда на самом тяжелом моменте движения.",
-                "Твой главный соперник — это ты вчерашний. Победи его.",
-                "Пей воду между сетами маленькими глотками. Не заливайся.",
-                "Локти веди к ребрам, а не в стороны. Так включается спина."
-            ];
-            return tips[day % tips.length];
         }
     </script>
 </body>
