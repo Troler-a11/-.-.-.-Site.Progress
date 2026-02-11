@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>س.через.силу.ك: 🪬 | TITAN AI v6.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
         /* TITAN OS v6.0 CORE STYLES 
            DESIGNED BY س.через.силу.ك
         */
@@ -555,45 +552,39 @@
     </div>
 
     <script>
-        // === 1. ПІДКЛЮЧЕННЯ FIREBASE (ВСТАВЛЯТИ ПЕРШИМ У <script>) ===
-// Переконайся, що в <head> додано скрипти Firebase SDK
+        // === 1. КОНФІГУРАЦІЯ (Твої ключі) ===
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDcsXkmVb9lw5C4ZCLf1PMoLqb5ZO2nA3Y",
+    authDomain: "vip-shop-a2ec4.firebaseapp.com",
+    databaseURL: "https://vip-shop-a2ec4-default-rtdb.firebaseio.com",
+    projectId: "vip-shop-a2ec4",
+    storageBucket: "vip-shop-a2ec4.firebasestorage.app",
+    messagingSenderId: "429877342673",
+    appId: "1:429877342673:web:0d2b5443f46bc03ec670f0"
 };
 
-// Ініціалізація (якщо ще не ініціалізовано)
+// Ініціалізація
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.database();
 
-// === 2. СИСТЕМА ПАРТНЕРКИ (КНОПКА ТА ЛОГІКА) ===
+// === 2. ЛОГІКА КНОПКИ ТА ПЕРЕВІРОК ===
 (function() {
+    // Створення кнопки 👤
     const authorBox = document.createElement('div');
-    authorBox.style.cssText = `
-        position: fixed; bottom: 20px; right: 20px; z-index: 10001;
-        width: 55px; height: 55px; background: #ff6b00; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
-        border: 2px solid rgba(255,255,255,0.2); transition: 0.3s;
-    `;
+    authorBox.style.cssText = `position: fixed; bottom: 20px; right: 20px; z-index: 10001; width: 55px; height: 55px; background: #ff6b00; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 0, 0.5); border: 2px solid rgba(255,255,255,0.2);`;
     authorBox.innerHTML = `<span style="font-size: 22px;">👤</span>`;
     document.body.appendChild(authorBox);
 
     authorBox.onclick = async () => {
-        // Перевірка на повторне введення (захист по LocalStorage)
+        // ПЕРЕВІРКА 1: Ліміт на 1 введення
         if (localStorage.getItem('promo_used')) {
-            showNotification("ВЫ УЖЕ ИСПОЛЬЗОВАЛИ КОД");
+            showNotification("ВИ ВИЧЕРПАЛИ ЛІМІТ: 1 ВВЕДЕННЯ ЗА ВСЕ ЖИТТЯ");
             return;
         }
 
-        const promo = prompt("ВВЕДИТЕ КОД АВТОРА:");
+        const promo = prompt("ВВЕДІТЬ КОД АВТОРА:");
         if (!promo) return;
         const cleanPromo = promo.toUpperCase().trim();
 
@@ -602,25 +593,29 @@ const db = firebase.database();
             const snap = await ref.once('value');
             
             if (snap.exists()) {
-                // Додаємо +1 в базу Firebase
-                await ref.update({ count: snap.val().count + 1 });
-                // Блокуємо повторне введення на цьому пристрої
-                localStorage.setItem('promo_used', 'true');
+                // ПЕРЕВІРКА 2: Код правильний -> +1 в базу
+                const currentCount = snap.val().count || 0;
+                await ref.update({ count: currentCount + 1 });
                 
-                if(typeof AudioFX !== 'undefined') AudioFX.play('complete');
-                showNotification("КОД АКТИВИРОВАН! СИСТЕМА ОБНОВЛЕНА.");
+                localStorage.setItem('promo_used', 'true');
+                showNotification("КОД УСПІШНО ВВЕДЕНО!");
             } else {
-                showNotification("ТАКОГО КОДА НЕ СУЩЕСТВУЕТ");
+                // ПЕРЕВІРКА 3: Коду не існує
+                showNotification("ТАКОГО КОДА НЕ ІСНУЄ");
             }
         } catch (e) {
-            console.error(e);
-            showNotification("ОШИБКА СВЯЗИ С БАЗОЙ");
+            showNotification("ПОМИЛКА ЗВ'ЯЗКУ");
         }
     };
+
+    function showNotification(text) {
+        const msg = document.createElement('div');
+        msg.style.cssText = `position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ff6b00; color: #000; padding: 15px; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; z-index: 20000; text-align: center;`;
+        msg.innerText = text;
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 3000);
+    }
 })();
-
-// === ДАЛІ ЙДЕ Твій ОСНОВНИЙ КОД (TitanDB, updateGlobalUI і т.д.) ===
-
         // TITAN DATABASE 6.0 — 55 УПРАЖНЕНИЙ С МАТРИЦЕЙ ТИПОВ
         const TitanDB = [
             // Плечевой пояс / Тяги (PULL)
