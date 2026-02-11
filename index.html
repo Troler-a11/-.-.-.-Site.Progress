@@ -4,6 +4,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
+
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
         /* TITAN OS v6.0 CORE STYLES 
            DESIGNED BY س.через.силу.ك
@@ -552,7 +553,7 @@
     </div>
 
     <script>
-        // === 1. КОНФІГУРАЦІЯ (Твої ключі) ===
+        // 1. КОНФІГ (Твої дані вже вписані)
 const firebaseConfig = {
     apiKey: "AIzaSyDcsXkmVb9lw5C4ZCLf1PMoLqb5ZO2nA3Y",
     authDomain: "vip-shop-a2ec4.firebaseapp.com",
@@ -563,58 +564,46 @@ const firebaseConfig = {
     appId: "1:429877342673:web:0d2b5443f46bc03ec670f0"
 };
 
-// Ініціалізація
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// === 2. ЛОГІКА КНОПКИ ТА ПЕРЕВІРОК ===
+// 2. ЛОГІКА
 (function() {
-    // Створення кнопки 👤
-    const authorBox = document.createElement('div');
-    authorBox.style.cssText = `position: fixed; bottom: 20px; right: 20px; z-index: 10001; width: 55px; height: 55px; background: #ff6b00; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 0, 0.5); border: 2px solid rgba(255,255,255,0.2);`;
-    authorBox.innerHTML = `<span style="font-size: 22px;">👤</span>`;
-    document.body.appendChild(authorBox);
+    const btn = document.createElement('div');
+    btn.style.cssText = "position:fixed;bottom:20px;right:20px;z-index:9999;width:55px;height:55px;background:#ff6b00;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 15px #ff6b00;font-size:22px;";
+    btn.innerHTML = "👤";
+    document.body.appendChild(btn);
 
-    authorBox.onclick = async () => {
-        // ПЕРЕВІРКА 1: Ліміт на 1 введення
+    function notify(t) {
+        const m = document.createElement('div');
+        m.style.cssText = "position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#ff6b00;color:#000;padding:15px;border-radius:10px;font-family:sans-serif;font-weight:900;z-index:10000;text-align:center;";
+        m.innerText = t;
+        document.body.appendChild(m);
+        setTimeout(() => m.remove(), 3000);
+    }
+
+    btn.onclick = function() {
         if (localStorage.getItem('promo_used')) {
-            showNotification("ВИ ВИЧЕРПАЛИ ЛІМІТ: 1 ВВЕДЕННЯ ЗА ВСЕ ЖИТТЯ");
+            notify("ВИ ВИЧЕРПАЛИ ЛІМІТ: 1 ВВЕДЕННЯ");
             return;
         }
 
-        const promo = prompt("ВВЕДІТЬ КОД АВТОРА:");
+        const promo = prompt("ВВЕДІТЬ КОД:");
         if (!promo) return;
-        const cleanPromo = promo.toUpperCase().trim();
+        const code = promo.toUpperCase().trim();
 
-        try {
-            const ref = db.ref('affiliates/' + cleanPromo);
-            const snap = await ref.once('value');
-            
+        db.ref('affiliates/' + code).once('value').then((snap) => {
             if (snap.exists()) {
-                // ПЕРЕВІРКА 2: Код правильний -> +1 в базу
-                const currentCount = snap.val().count || 0;
-                await ref.update({ count: currentCount + 1 });
-                
-                localStorage.setItem('promo_used', 'true');
-                showNotification("КОД УСПІШНО ВВЕДЕНО!");
+                const count = snap.val().count || 0;
+                db.ref('affiliates/' + code).update({ count: count + 1 }).then(() => {
+                    localStorage.setItem('promo_used', 'true');
+                    notify("КОД УСПІШНО ВВЕДЕНО!");
+                });
             } else {
-                // ПЕРЕВІРКА 3: Коду не існує
-                showNotification("ТАКОГО КОДА НЕ ІСНУЄ");
+                notify("ТАКОГО КОДА НЕ ІСНУЄ");
             }
-        } catch (e) {
-            showNotification("ПОМИЛКА ЗВ'ЯЗКУ");
-        }
+        }).catch(() => notify("ПОМИЛКА БАЗИ"));
     };
-
-    function showNotification(text) {
-        const msg = document.createElement('div');
-        msg.style.cssText = `position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ff6b00; color: #000; padding: 15px; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; z-index: 20000; text-align: center;`;
-        msg.innerText = text;
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 3000);
-    }
 })();
         // TITAN DATABASE 6.0 — 55 УПРАЖНЕНИЙ С МАТРИЦЕЙ ТИПОВ
         const TitanDB = [
