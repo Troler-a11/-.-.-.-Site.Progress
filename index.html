@@ -554,177 +554,45 @@
         </div>
     </div>
     <script>
-    // 1. Прямий імпорт останньої версії (v12.x)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+    // === ПАРТНЕРКА (БЕЗПЕЧНА ВЕРСІЯ) ===
+(function() {
+    const createBtn = () => {
+        const btn = document.createElement('div');
+        btn.id = "author_promo_btn";
+        btn.style.cssText = `position:fixed;bottom:20px;right:20px;z-index:10001;width:55px;height:55px;background:#ff6b00;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 15px rgba(255,107,0,0.5);border:2px solid rgba(255,255,255,0.2);transition:0.3s;user-select:none;`;
+        btn.innerHTML = `<span style="font-size:24px;">👤</span>`;
+        document.body.appendChild(btn);
 
-    // 2. Твій конфіг (уже перевірений)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDcsXkmVb9lw5C4ZCLf1PMoLqb5ZO2nA3Y",
-        authDomain: "vip-shop-a2ec4.firebaseapp.com",
-        databaseURL: "https://vip-shop-a2ec4-default-rtdb.firebaseio.com",
-        projectId: "vip-shop-a2ec4",
-        storageBucket: "vip-shop-a2ec4.firebasestorage.app",
-        messagingSenderId: "429877342673",
-        appId: "1:429877342673:web:0d2b5443f46bc03ec670f0"
-    };
+        btn.onclick = async () => {
+            if (localStorage.getItem('promo_done')) return alert("ЛИМИТ: 1 ВВОД НАВСЕГДА");
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // 3. Логіка кнопки 👤
-    (function() {
-        const authorBox = document.createElement('div');
-        authorBox.style.cssText = `
-            position: fixed; bottom: 20px; right: 20px; z-index: 10001;
-            width: 55px; height: 55px; background: #ff6b00; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
-            border: 2px solid rgba(255,255,255,0.2);
-        `;
-        authorBox.innerHTML = `<span style="font-size: 22px;">👤</span>`;
-        document.body.appendChild(authorBox);
-
-        authorBox.onclick = async () => {
-            // Перевірка на ліміт (1 раз на життя пристрою)
-            if (localStorage.getItem('promo_used')) {
-                showNotification("ЛИМИТ ИСЧЕРПАН: 1 ВВОД НА ВСЕГДА");
-                return;
-            }
-
-            const promo = prompt("ВВЕДИТЕ КОД АВТОРА:");
-            if (!promo) return;
-            const cleanPromo = promo.toUpperCase().trim();
+            let p = prompt("ВВЕДИТЕ КОД АВТОРА:");
+            if (!p) return;
+            p = p.trim().toUpperCase();
 
             try {
-                const dbRef = ref(db, 'affiliates/' + cleanPromo);
-                const snap = await get(dbRef);
-                
+                // Авто-визначення бази: шукаємо або db, або firebase.database()
+                const database = (typeof db !== 'undefined') ? db : firebase.database();
+                const ref = database.ref('affiliates/' + p);
+                const snap = await ref.once('value');
+
                 if (snap.exists()) {
-                    // Код є -> +1
-                    const currentCount = snap.val().count || 0;
-                    await update(dbRef, { count: currentCount + 1 });
-                    
-                    // Блокуємо назавжди
-                    localStorage.setItem('promo_used', 'true');
-                    showNotification("КОД УСПЕШНО АКТИВИРОВАН!");
-<script type="module">
-    // 1. Прямий імпорт останньої версії (v12.x)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
-
-    // 2. Твій конфіг (уже перевірений)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDcsXkmVb9lw5C4ZCLf1PMoLqb5ZO2nA3Y",
-        authDomain: "vip-shop-a2ec4.firebaseapp.com",
-        databaseURL: "https://vip-shop-a2ec4-default-rtdb.firebaseio.com",
-        projectId: "vip-shop-a2ec4",
-        storageBucket: "vip-shop-a2ec4.firebasestorage.app",
-        messagingSenderId: "429877342673",
-        appId: "1:429877342673:web:0d2b5443f46bc03ec670f0"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // 3. Логіка кнопки 👤
-    (function() {
-        const authorBox = document.createElement('div');
-        authorBox.style.cssText = `
-            position: fixed; bottom: 20px; right: 20px; z-index: 10001;
-            width: 55px; height: 55px; background: #ff6b00; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
-            border: 2px solid rgba(255,255,255,0.2);
-        `;
-        authorBox.innerHTML = `<span style="font-size: 22px;">👤</span>`;
-        document.body.appendChild(authorBox);
-
-        authorBox.onclick = async () => {
-            // Перевірка на ліміт (1 раз на життя пристрою)
-            if (localStorage.getItem('promo_used')) {
-                showNotification("ЛИМИТ ИСЧЕРПАН: 1 ВВОД НА ВСЕГДА");
-                return;
-            }
-
-            const promo = prompt("ВВЕДИТЕ КОД АВТОРА:");
-            if (!promo) return;
-            const cleanPromo = promo.toUpperCase().trim();
-
-            try {
-                const dbRef = ref(db, 'affiliates/' + cleanPromo);
-                const snap = await get(dbRef);
-                
-                if (snap.exists()) {
-                    // Код є -> +1
-                    const currentCount = snap.val().count || 0;
-                    await update(dbRef, { count: currentCount + 1 });
-                    
-                    // Блокуємо назавжди
-                    localStorage.setItem('promo_used', 'true');
-                    showNotification("КОД УСПЕШНО АКТИВИРОВАН!");
+                    await ref.update({ count: (snap.val().count || 0) + 1 });
+                    localStorage.setItem('promo_done', 'true');
+                    alert("КОД АКТИВИРОВАН!");
                 } else {
-                    // Коду немає
-                    showNotification("ТАКОГО КОДА НЕ СУЩЕСТВУЕТ");
+                    alert("КОД НЕ НАЙДЕН");
                 }
             } catch (e) {
-                showNotification("ОШИБКА БАЗЫ ДАННЫХ");
+                console.error(e);
+                alert("ОШИБКА БАЗЫ ДАННЫХ");
             }
         };
-
-        function showNotification(text) {
-            const msg = document.createElement('div');
-            msg.style.cssText = `
-                position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-                background: #ff6b00; color: #000; padding: 15px 25px; border-radius: 10px;
-                font-family: 'Orbitron', sans-serif; font-weight: 900; z-index: 20000;
-                text-align: center; box-shadow: 0 0 20px rgba(255,107,0,0.5);
-            `;
-            msg.innerText = text;
-            document.body.appendChild(msg);
-            setTimeout(() => msg.remove(), 3000);
-        }
-    })();
-</scrit>
-// === СИСТЕМА ПАРТНЕРКИ (ВСТАВЛЯТИ ТУТ) ===
-(function() {
-    const btn = document.createElement('div');
-    btn.style.cssText = `position:fixed;bottom:20px;right:20px;z-index:10001;width:55px;height:55px;background:#ff6b00;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 15px rgba(255,107,0,0.5);border:2px solid rgba(255,255,255,0.2);transition:0.3s;user-select:none;animation:btnPulse 2s infinite;`;
-    btn.innerHTML = `<span style="font-size:24px;">👤</span>`;
-    document.body.appendChild(btn);
-
-    const style = document.createElement('style');
-    style.innerHTML = `@keyframes btnPulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}`;
-    document.head.appendChild(style);
-
-    btn.onclick = async () => {
-        if (localStorage.getItem('promo_done')) return showMsg("ЛИМИТ: 1 ВВОД", "#ff3333");
-
-        let p = prompt("ВВЕДИТЕ КОД АВТОРА:");
-        if (!p) return;
-        p = p.trim().toUpperCase();
-
-        try {
-            const r = ref(db, `affiliates/${p}`);
-            const s = await get(r);
-
-            if (s.exists()) {
-                await update(r, { count: (s.val().count || 0) + 1 });
-                localStorage.setItem('promo_done', 'true');
-                showMsg("АКТИВИРОВАНО!", "#00ff00");
-            } else {
-                showMsg("КОД НЕ НАЙДЕН", "#ff3333");
-            }
-        } catch (e) { showMsg("ОШИБКА БАЗЫ", "#ff3333"); }
     };
 
-    function showMsg(t, c) {
-        const n = document.createElement('div');
-        n.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${c};color:#fff;padding:12px 20px;border-radius:8px;font-family:sans-serif;font-weight:bold;z-index:20000;box-shadow:0 5px 15px rgba(0,0,0,0.3);transition:0.5s;`;
-        n.innerText = t;
-        document.body.appendChild(n);
-        setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 2500);
-    }
+    // Чекаємо завантаження сторінки, щоб не зламати DOM
+    if (document.readyState === 'complete') createBtn();
+    else window.addEventListener('load', createBtn);
 })();
 
 
