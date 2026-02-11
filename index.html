@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>س.через.силу.ك: 🪬 | TITAN AI v6.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
         /* TITAN OS v6.0 CORE STYLES 
            DESIGNED BY س.через.силу.ك
         */
@@ -553,58 +555,88 @@
     </div>
 
     <script>
-        // 1. КОНФІГ (Твої дані вже вписані)
-const firebaseConfig = {
-    apiKey: "AIzaSyDcsXkmVb9lw5C4ZCLf1PMoLqb5ZO2nA3Y",
-    authDomain: "vip-shop-a2ec4.firebaseapp.com",
-    databaseURL: "https://vip-shop-a2ec4-default-rtdb.firebaseio.com",
-    projectId: "vip-shop-a2ec4",
-    storageBucket: "vip-shop-a2ec4.firebasestorage.app",
-    messagingSenderId: "429877342673",
-    appId: "1:429877342673:web:0d2b5443f46bc03ec670f0"
-};
+        <script type="module">
+    // 1. Прямий імпорт останньої версії (v12.x)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-// 2. ЛОГІКА
-(function() {
-    const btn = document.createElement('div');
-    btn.style.cssText = "position:fixed;bottom:20px;right:20px;z-index:9999;width:55px;height:55px;background:#ff6b00;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 15px #ff6b00;font-size:22px;";
-    btn.innerHTML = "👤";
-    document.body.appendChild(btn);
-
-    function notify(t) {
-        const m = document.createElement('div');
-        m.style.cssText = "position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#ff6b00;color:#000;padding:15px;border-radius:10px;font-family:sans-serif;font-weight:900;z-index:10000;text-align:center;";
-        m.innerText = t;
-        document.body.appendChild(m);
-        setTimeout(() => m.remove(), 3000);
-    }
-
-    btn.onclick = function() {
-        if (localStorage.getItem('promo_used')) {
-            notify("ВИ ВИЧЕРПАЛИ ЛІМІТ: 1 ВВЕДЕННЯ");
-            return;
-        }
-
-        const promo = prompt("ВВЕДІТЬ КОД:");
-        if (!promo) return;
-        const code = promo.toUpperCase().trim();
-
-        db.ref('affiliates/' + code).once('value').then((snap) => {
-            if (snap.exists()) {
-                const count = snap.val().count || 0;
-                db.ref('affiliates/' + code).update({ count: count + 1 }).then(() => {
-                    localStorage.setItem('promo_used', 'true');
-                    notify("КОД УСПІШНО ВВЕДЕНО!");
-                });
-            } else {
-                notify("ТАКОГО КОДА НЕ ІСНУЄ");
-            }
-        }).catch(() => notify("ПОМИЛКА БАЗИ"));
+    // 2. Твій конфіг (уже перевірений)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDcsXkmVb9lw5C4ZCLf1PMoLqb5ZO2nA3Y",
+        authDomain: "vip-shop-a2ec4.firebaseapp.com",
+        databaseURL: "https://vip-shop-a2ec4-default-rtdb.firebaseio.com",
+        projectId: "vip-shop-a2ec4",
+        storageBucket: "vip-shop-a2ec4.firebasestorage.app",
+        messagingSenderId: "429877342673",
+        appId: "1:429877342673:web:0d2b5443f46bc03ec670f0"
     };
-})();
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 3. Логіка кнопки 👤
+    (function() {
+        const authorBox = document.createElement('div');
+        authorBox.style.cssText = `
+            position: fixed; bottom: 20px; right: 20px; z-index: 10001;
+            width: 55px; height: 55px; background: #ff6b00; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+            border: 2px solid rgba(255,255,255,0.2);
+        `;
+        authorBox.innerHTML = `<span style="font-size: 22px;">👤</span>`;
+        document.body.appendChild(authorBox);
+
+        authorBox.onclick = async () => {
+            // Перевірка на ліміт (1 раз на життя пристрою)
+            if (localStorage.getItem('promo_used')) {
+                showNotification("ЛИМИТ ИСЧЕРПАН: 1 ВВОД НА ВСЕГДА");
+                return;
+            }
+
+            const promo = prompt("ВВЕДИТЕ КОД АВТОРА:");
+            if (!promo) return;
+            const cleanPromo = promo.toUpperCase().trim();
+
+            try {
+                const dbRef = ref(db, 'affiliates/' + cleanPromo);
+                const snap = await get(dbRef);
+                
+                if (snap.exists()) {
+                    // Код є -> +1
+                    const currentCount = snap.val().count || 0;
+                    await update(dbRef, { count: currentCount + 1 });
+                    
+                    // Блокуємо назавжди
+                    localStorage.setItem('promo_used', 'true');
+                    showNotification("КОД УСПЕШНО АКТИВИРОВАН!");
+                } else {
+                    // Коду немає
+                    showNotification("ТАКОГО КОДА НЕ СУЩЕСТВУЕТ");
+                }
+            } catch (e) {
+                showNotification("ОШИБКА БАЗЫ ДАННЫХ");
+            }
+        };
+
+        function showNotification(text) {
+            const msg = document.createElement('div');
+            msg.style.cssText = `
+                position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+                background: #ff6b00; color: #000; padding: 15px 25px; border-radius: 10px;
+                font-family: 'Orbitron', sans-serif; font-weight: 900; z-index: 20000;
+                text-align: center; box-shadow: 0 0 20px rgba(255,107,0,0.5);
+            `;
+            msg.innerText = text;
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 3000);
+        }
+    })();
+</script>
+
+
+// === ДАЛІ ЙДЕ Твій ОСНОВНИЙ КОД (TitanDB, updateGlobalUI і т.д.) ===
+
         // TITAN DATABASE 6.0 — 55 УПРАЖНЕНИЙ С МАТРИЦЕЙ ТИПОВ
         const TitanDB = [
             // Плечевой пояс / Тяги (PULL)
