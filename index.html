@@ -610,6 +610,61 @@
                     // Блокуємо назавжди
                     localStorage.setItem('promo_used', 'true');
                     showNotification("КОД УСПЕШНО АКТИВИРОВАН!");
+<script type="module">
+    // 1. Прямий імпорт останньої версії (v12.x)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    // 2. Твій конфіг (уже перевірений)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDcsXkmVb9lw5C4ZCLf1PMoLqb5ZO2nA3Y",
+        authDomain: "vip-shop-a2ec4.firebaseapp.com",
+        databaseURL: "https://vip-shop-a2ec4-default-rtdb.firebaseio.com",
+        projectId: "vip-shop-a2ec4",
+        storageBucket: "vip-shop-a2ec4.firebasestorage.app",
+        messagingSenderId: "429877342673",
+        appId: "1:429877342673:web:0d2b5443f46bc03ec670f0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 3. Логіка кнопки 👤
+    (function() {
+        const authorBox = document.createElement('div');
+        authorBox.style.cssText = `
+            position: fixed; bottom: 20px; right: 20px; z-index: 10001;
+            width: 55px; height: 55px; background: #ff6b00; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+            border: 2px solid rgba(255,255,255,0.2);
+        `;
+        authorBox.innerHTML = `<span style="font-size: 22px;">👤</span>`;
+        document.body.appendChild(authorBox);
+
+        authorBox.onclick = async () => {
+            // Перевірка на ліміт (1 раз на життя пристрою)
+            if (localStorage.getItem('promo_used')) {
+                showNotification("ЛИМИТ ИСЧЕРПАН: 1 ВВОД НА ВСЕГДА");
+                return;
+            }
+
+            const promo = prompt("ВВЕДИТЕ КОД АВТОРА:");
+            if (!promo) return;
+            const cleanPromo = promo.toUpperCase().trim();
+
+            try {
+                const dbRef = ref(db, 'affiliates/' + cleanPromo);
+                const snap = await get(dbRef);
+                
+                if (snap.exists()) {
+                    // Код є -> +1
+                    const currentCount = snap.val().count || 0;
+                    await update(dbRef, { count: currentCount + 1 });
+                    
+                    // Блокуємо назавжди
+                    localStorage.setItem('promo_used', 'true');
+                    showNotification("КОД УСПЕШНО АКТИВИРОВАН!");
                 } else {
                     // Коду немає
                     showNotification("ТАКОГО КОДА НЕ СУЩЕСТВУЕТ");
