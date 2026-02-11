@@ -687,7 +687,47 @@
             setTimeout(() => msg.remove(), 3000);
         }
     })();
-</script>
+</scrit>
+// === СИСТЕМА ПАРТНЕРКИ (ВСТАВЛЯТИ ТУТ) ===
+(function() {
+    const btn = document.createElement('div');
+    btn.style.cssText = `position:fixed;bottom:20px;right:20px;z-index:10001;width:55px;height:55px;background:#ff6b00;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 15px rgba(255,107,0,0.5);border:2px solid rgba(255,255,255,0.2);transition:0.3s;user-select:none;animation:btnPulse 2s infinite;`;
+    btn.innerHTML = `<span style="font-size:24px;">👤</span>`;
+    document.body.appendChild(btn);
+
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes btnPulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}`;
+    document.head.appendChild(style);
+
+    btn.onclick = async () => {
+        if (localStorage.getItem('promo_done')) return showMsg("ЛИМИТ: 1 ВВОД", "#ff3333");
+
+        let p = prompt("ВВЕДИТЕ КОД АВТОРА:");
+        if (!p) return;
+        p = p.trim().toUpperCase();
+
+        try {
+            const r = ref(db, `affiliates/${p}`);
+            const s = await get(r);
+
+            if (s.exists()) {
+                await update(r, { count: (s.val().count || 0) + 1 });
+                localStorage.setItem('promo_done', 'true');
+                showMsg("АКТИВИРОВАНО!", "#00ff00");
+            } else {
+                showMsg("КОД НЕ НАЙДЕН", "#ff3333");
+            }
+        } catch (e) { showMsg("ОШИБКА БАЗЫ", "#ff3333"); }
+    };
+
+    function showMsg(t, c) {
+        const n = document.createElement('div');
+        n.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${c};color:#fff;padding:12px 20px;border-radius:8px;font-family:sans-serif;font-weight:bold;z-index:20000;box-shadow:0 5px 15px rgba(0,0,0,0.3);transition:0.5s;`;
+        n.innerText = t;
+        document.body.appendChild(n);
+        setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 2500);
+    }
+})();
 
 
 // === ДАЛІ ЙДЕ Твій ОСНОВНИЙ КОД (TitanDB, updateGlobalUI і т.д.) ===
